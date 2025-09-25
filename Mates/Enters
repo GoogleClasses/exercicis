@@ -1,1 +1,533 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content="Mates, Enters, Vedruna Gràcia, Exercicis">
+    <title>Mates - Exercicis Enters</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            color: #333;
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .container {
+            max-width: 800px;
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            margin-top: 20px;
+        }
+        
+        h1 {
+            text-align: center;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            margin-bottom: 10px;
+            font-size: 2.5rem;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+            font-size: 1.2rem;
+        }
+        
+        .instructions {
+            background-color: #e8f4fc;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            border-left: 5px solid #3498db;
+        }
+        
+        .instructions h2 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        
+        .exercise-container {
+            background-color: #f9f9f9;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e0e0e0;
+        }
+        
+        .exercise {
+            font-size: 1.8rem;
+            text-align: center;
+            margin-bottom: 25px;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            min-height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .input-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        input[type="number"] {
+            padding: 12px 15px;
+            font-size: 1.2rem;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            width: 200px;
+            transition: border-color 0.3s;
+        }
+        
+        input[type="number"]:focus {
+            border-color: #3498db;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.3);
+        }
+        
+        button {
+            padding: 12px 25px;
+            background: linear-gradient(to right, #3498db, #2980b9);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: bold;
+            transition: all 0.3s;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+        }
+        
+        button:active {
+            transform: translateY(0);
+        }
+        
+        .check-btn {
+            background: linear-gradient(to right, #2ecc71, #27ae60);
+        }
+        
+        .new-exercise-btn {
+            background: linear-gradient(to right, #e74c3c, #c0392b);
+        }
+        
+        .result {
+            margin-top: 20px;
+            font-weight: bold;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 1.2rem;
+            transition: all 0.3s;
+        }
+        
+        .correct {
+            color: #27ae60;
+            background-color: #d5f4e6;
+            border: 2px solid #27ae60;
+        }
+        
+        .incorrect {
+            color: #e74c3c;
+            background-color: #fadbd8;
+            border: 2px solid #e74c3c;
+        }
+        
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .complexity-controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .complexity-btn {
+            padding: 10px 20px;
+            background: linear-gradient(to right, #9b59b6, #8e44ad);
+            font-size: 1rem;
+        }
+        
+        .complexity-btn.active {
+            background: linear-gradient(to right, #e67e22, #d35400);
+            box-shadow: 0 0 0 3px rgba(230, 126, 34, 0.5);
+        }
+        
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 30px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            font-weight: bold;
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 1.5rem;
+            color: #3498db;
+        }
+        
+        footer {
+            margin-top: 30px;
+            text-align: center;
+            color: white;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                padding: 15px;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .exercise {
+                font-size: 1.4rem;
+                padding: 15px;
+            }
+            
+            .input-container {
+                flex-direction: column;
+            }
+            
+            input[type="number"] {
+                width: 100%;
+            }
+            
+            .controls {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>MATES</h1>
+    <p class="subtitle">Operacions matemàtiques amb enters</p>
+    
+    <div class="container">
+        <div class="instructions">
+            <h2>Instruccions:</h2>
+            <p>Resol els següents exercicis de nombres enters.</p>
+            <p>Escriu la resposta i Verifica-la amb l'enter o amb el botó de "Verifica la resposta"</p>
+            <p>Pots sel·leccionar la dificultat dels exercicis segons el teu nivell de càlcul.</p>
+            <p>A la part inferior, pots veure el progrés (Preguntes correctes o fallides)</p>
+        </div>
+        
+        <div class="complexity-controls">
+            <button id="medium-complexity" class="complexity-btn active">Nivell Mitjà</button>
+            <button id="high-complexity" class="complexity-btn">Nivell Difícil</button>
+        </div>
+        
+        <div class="exercise-container">
+            <div class="exercise" id="exercise-text">L'exercici apareixrà aquí</div>
+            
+            <div class="input-container">
+                <input type="number" id="answer-input" placeholder="Introdueix la resposta">
+                <button id="check-btn" class="check-btn">Verificar resposta</button>
+            </div>
+            
+            <div class="result" id="result"></div>
+        </div>
+        
+        <div class="controls">
+            <button id="new-exercise-btn" class="new-exercise-btn">Nou exercici</button>
+            <button id="show-solution-btn">👀 Solució</button>
+        </div>
+        
+        <div class="stats">
+            <div class="stat-item">
+                <div class="stat-value" id="correct-count">0</div>
+                <div>Correctas</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="incorrect-count">0</div>
+                <div>Incorrectas</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="total-count">0</div>
+                <div>Total</div>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <p>Generador d'exercicis Enters. &copy;GoogleClasses 2025</p>
+    </footer>
 
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const exerciseText = document.getElementById('exercise-text');
+            const answerInput = document.getElementById('answer-input');
+            const checkBtn = document.getElementById('check-btn');
+            const resultDiv = document.getElementById('result');
+            const newExerciseBtn = document.getElementById('new-exercise-btn');
+            const showSolutionBtn = document.getElementById('show-solution-btn');
+            const mediumComplexityBtn = document.getElementById('medium-complexity');
+            const highComplexityBtn = document.getElementById('high-complexity');
+            const correctCountElem = document.getElementById('correct-count');
+            const incorrectCountElem = document.getElementById('incorrect-count');
+            const totalCountElem = document.getElementById('total-count');
+            
+            let currentExercise = null;
+            let correctAnswer = null;
+            let currentComplexity = 'medium';
+            let correctCount = 0;
+            let incorrectCount = 0;
+            let totalCount = 0;
+            
+            // Generar un número aleatorio entre min y max (incluyendo negativos)
+            function getRandomInt(min, max) {
+                return Math.floor(Math.random() * (max - min + 1)) + min;
+            }
+            
+            // Seleccionar un operador aleatorio
+            function getRandomOperator() {
+                const operators = ['+', '-', '×', '÷'];
+                return operators[getRandomInt(0, 3)];
+            }
+            
+            // Generar un ejercicio de complejidad media
+            function generateMediumComplexityExercise() {
+                const exerciseType = getRandomInt(0, 3);
+                let num1, num2, num3, num4, op1, op2, op3, exerciseString;
+                
+                switch(exerciseType) {
+                    case 0: // Ejemplo: -(+3) × 5 - 6
+                        num1 = getRandomInt(1, 10);
+                        num2 = getRandomInt(1, 10);
+                        num3 = getRandomInt(1, 10);
+                        
+                        exerciseString = `-(+${num1}) × ${num2} - ${num3}`;
+                        correctAnswer = -num1 * num2 - num3;
+                        break;
+                        
+                    case 1: // Ejemplo: 8 × (3 + 6) - 1
+                        num1 = getRandomInt(1, 10);
+                        num2 = getRandomInt(1, 10);
+                        num3 = getRandomInt(1, 10);
+                        num4 = getRandomInt(1, 10);
+                        
+                        exerciseString = `${num1} × (${num2} + ${num3}) - ${num4}`;
+                        correctAnswer = num1 * (num2 + num3) - num4;
+                        break;
+                        
+                    case 2: // Ejemplo: -5 + [3 × (4 - 2)]
+                        num1 = getRandomInt(1, 10);
+                        num2 = getRandomInt(1, 10);
+                        num3 = getRandomInt(1, 10);
+                        num4 = getRandomInt(1, 10);
+                        
+                        exerciseString = `-${num1} + [${num2} × (${num3} - ${num4})]`;
+                        correctAnswer = -num1 + (num2 * (num3 - num4));
+                        break;
+                        
+                    case 3: // Ejemplo: (7 - 2) × (-3 + 1)
+                        num1 = getRandomInt(1, 10);
+                        num2 = getRandomInt(1, 10);
+                        num3 = getRandomInt(1, 10);
+                        num4 = getRandomInt(1, 10);
+                        
+                        exerciseString = `(${num1} - ${num2}) × (-${num3} + ${num4})`;
+                        correctAnswer = (num1 - num2) * (-num3 + num4);
+                        break;
+                }
+                
+                return { exerciseString, correctAnswer };
+            }
+            
+            // Generar un ejercicio de alta complejidad
+            function generateHighComplexityExercise() {
+                const exerciseType = getRandomInt(0, 2);
+                let num1, num2, num3, num4, num5, num6, exerciseString;
+                
+                switch(exerciseType) {
+                    case 0: // Ejemplo: -(+3) × 5 - 6 + [8 × (3 + 6) - 1] + 3
+                        num1 = getRandomInt(1, 5);
+                        num2 = getRandomInt(1, 5);
+                        num3 = getRandomInt(1, 5);
+                        num4 = getRandomInt(1, 5);
+                        num5 = getRandomInt(1, 5);
+                        num6 = getRandomInt(1, 5);
+                        
+                        exerciseString = `-(+${num1}) × ${num2} - ${num3} + [${num4} × (${num5} + ${num6}) - 1] + 3`;
+                        correctAnswer = -num1 * num2 - num3 + (num4 * (num5 + num6) - 1) + 3;
+                        break;
+                        
+                    case 1: // Ejemplo: {2 × [3 - (4 ÷ 2)]} + (-5 × 3)
+                        num1 = getRandomInt(1, 6);
+                        num2 = getRandomInt(1, 6);
+                        num3 = getRandomInt(1, 6);
+                        num4 = getRandomInt(1, 6);
+                        num5 = getRandomInt(1, 6);
+                        
+                        // Asegurar que la división sea exacta
+                        num2 = num2 * num3;
+                        
+                        exerciseString = `{${num1} × [${num2} ÷ (${num3} - 1)]} + (-${num4} × ${num5})`;
+                        correctAnswer = (num1 * (num2 / (num3 - 1))) + (-num4 * num5);
+                        break;
+                        
+                    case 2: // Ejemplo: -[5 × (3 - 1)] + {2 × [-4 + (6 ÷ 2)]}
+                        num1 = getRandomInt(1, 6);
+                        num2 = getRandomInt(1, 6);
+                        num3 = getRandomInt(1, 6);
+                        num4 = getRandomInt(1, 6);
+                        num5 = getRandomInt(1, 6);
+                        num6 = getRandomInt(1, 6);
+                        
+                        // Asegurar que la división sea exacta
+                        num5 = num5 * 2;
+                        
+                        exerciseString = `-[${num1} × (${num2} - ${num3})] + {${num4} × [-${num5} + (${num6} ÷ 2)]}`;
+                        correctAnswer = -(num1 * (num2 - num3)) + (num4 * (-num5 + (num6 / 2)));
+                        break;
+                }
+                
+                return { exerciseString, correctAnswer };
+            }
+            
+            // Generar un ejercicio aleatorio
+            function generateExercise() {
+                let exerciseData;
+                
+                if (currentComplexity === 'medium') {
+                    exerciseData = generateMediumComplexityExercise();
+                } else {
+                    exerciseData = generateHighComplexityExercise();
+                }
+                
+                exerciseText.textContent = exerciseData.exerciseString + " = ?";
+                correctAnswer = exerciseData.correctAnswer;
+                currentExercise = exerciseData.exerciseString;
+                
+                // Redondear la respuesta si es necesario (para divisiones)
+                if (!Number.isInteger(correctAnswer)) {
+                    correctAnswer = Math.round(correctAnswer * 100) / 100;
+                }
+            }
+            
+            // Verificar la respuesta
+            function checkAnswer() {
+                const userAnswer = parseFloat(answerInput.value);
+                
+                if (isNaN(userAnswer)) {
+                    resultDiv.textContent = "Por favor, introduce un número válido";
+                    resultDiv.className = "result incorrect";
+                    return;
+                }
+                
+                totalCount++;
+                totalCountElem.textContent = totalCount;
+                
+                // Comparar respuestas con un margen de error pequeño para números decimales
+                if (Math.abs(userAnswer - correctAnswer) < 0.01) {
+                    resultDiv.textContent = "¡Correcto!";
+                    resultDiv.className = "result correct";
+                    correctCount++;
+                    correctCountElem.textContent = correctCount;
+                } else {
+                    resultDiv.textContent = `Incorrecto. La respuesta correcta es ${correctAnswer}.`;
+                    resultDiv.className = "result incorrect";
+                    incorrectCount++;
+                    incorrectCountElem.textContent = incorrectCount;
+                }
+            }
+            
+            // Mostrar la solución paso a paso
+            function showSolution() {
+                // En una implementación más avanzada, aquí se mostraría el proceso paso a paso
+                resultDiv.textContent = `Solución: ${currentExercise} = ${correctAnswer}`;
+                resultDiv.className = "result";
+            }
+            
+            // Limpiar y generar nuevo ejercicio
+            function newExercise() {
+                answerInput.value = "";
+                resultDiv.textContent = "";
+                resultDiv.className = "result";
+                generateExercise();
+                answerInput.focus();
+            }
+            
+            // Cambiar complejidad
+            function setComplexity(complexity) {
+                currentComplexity = complexity;
+                
+                if (complexity === 'medium') {
+                    mediumComplexityBtn.classList.add('active');
+                    highComplexityBtn.classList.remove('active');
+                } else {
+                    mediumComplexityBtn.classList.remove('active');
+                    highComplexityBtn.classList.add('active');
+                }
+                
+                newExercise();
+            }
+            
+            // Event listeners
+            checkBtn.addEventListener('click', checkAnswer);
+            
+            answerInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    checkAnswer();
+                }
+            });
+            
+            newExerciseBtn.addEventListener('click', newExercise);
+            showSolutionBtn.addEventListener('click', showSolution);
+            
+            mediumComplexityBtn.addEventListener('click', function() {
+                setComplexity('medium');
+            });
+            
+            highComplexityBtn.addEventListener('click', function() {
+                setComplexity('high');
+            });
+            
+            // Generar el primer ejercicio al cargar la página
+            generateExercise();
+            answerInput.focus();
+        });
+    </script>
+</body>
+</html>
