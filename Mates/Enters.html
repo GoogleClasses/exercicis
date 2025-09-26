@@ -291,7 +291,7 @@
     </div>
     
     <footer>
-        <p>Generador d'exercicis Enters. &copy;GoogleClasses 2025</p>
+        <p>Generador d'exercicis Enters. v1.5 &copy;GoogleClasses 2025</p>
     </footer>
 
     <script>
@@ -320,16 +320,10 @@
                 return Math.floor(Math.random() * (max - min + 1)) + min;
             }
             
-            // Seleccionar un operador aleatorio
-            function getRandomOperator() {
-                const operators = ['+', '-', '×', '÷'];
-                return operators[getRandomInt(0, 3)];
-            }
-            
             // Generar un ejercicio de complejidad media
             function generateMediumComplexityExercise() {
                 const exerciseType = getRandomInt(0, 3);
-                let num1, num2, num3, num4, op1, op2, op3, exerciseString;
+                let num1, num2, num3, num4, exerciseString;
                 
                 switch(exerciseType) {
                     case 0: // Ejemplo: -(+3) × 5 - 6
@@ -375,9 +369,9 @@
                 return { exerciseString, correctAnswer };
             }
             
-            // Generar un ejercicio de alta complejidad
+            // Generar un ejercicio de alta complejidad (solo con enteros)
             function generateHighComplexityExercise() {
-                const exerciseType = getRandomInt(0, 2);
+                const exerciseType = getRandomInt(0, 4);
                 let num1, num2, num3, num4, num5, num6, exerciseString;
                 
                 switch(exerciseType) {
@@ -393,21 +387,18 @@
                         correctAnswer = -num1 * num2 - num3 + (num4 * (num5 + num6) - 1) + 3;
                         break;
                         
-                    case 1: // Ejemplo: {2 × [3 - (4 ÷ 2)]} + (-5 × 3)
+                    case 1: // Ejemplo: {2 × [3 - (4 × 2)]} + (-5 × 3)
                         num1 = getRandomInt(1, 6);
                         num2 = getRandomInt(1, 6);
                         num3 = getRandomInt(1, 6);
                         num4 = getRandomInt(1, 6);
                         num5 = getRandomInt(1, 6);
                         
-                        // Asegurar que la división sea exacta
-                        num2 = num2 * num3;
-                        
-                        exerciseString = `{${num1} × [${num2} ÷ (${num3} - 1)]} + (-${num4} × ${num5})`;
-                        correctAnswer = (num1 * (num2 / (num3 - 1))) + (-num4 * num5);
+                        exerciseString = `{${num1} × [${num2} - (${num3} × ${num4})]} + (-${num5} × ${num1})`;
+                        correctAnswer = (num1 * (num2 - (num3 * num4))) + (-num5 * num1);
                         break;
                         
-                    case 2: // Ejemplo: -[5 × (3 - 1)] + {2 × [-4 + (6 ÷ 2)]}
+                    case 2: // Ejemplo: -[5 × (3 - 1)] + {2 × [-4 + (6 × 2)]}
                         num1 = getRandomInt(1, 6);
                         num2 = getRandomInt(1, 6);
                         num3 = getRandomInt(1, 6);
@@ -415,11 +406,40 @@
                         num5 = getRandomInt(1, 6);
                         num6 = getRandomInt(1, 6);
                         
-                        // Asegurar que la división sea exacta
-                        num5 = num5 * 2;
+                        exerciseString = `-[${num1} × (${num2} - ${num3})] + {${num4} × [-${num5} + (${num6} × 2)]}`;
+                        correctAnswer = -(num1 * (num2 - num3)) + (num4 * (-num5 + (num6 * 2)));
+                        break;
                         
-                        exerciseString = `-[${num1} × (${num2} - ${num3})] + {${num4} × [-${num5} + (${num6} ÷ 2)]}`;
-                        correctAnswer = -(num1 * (num2 - num3)) + (num4 * (-num5 + (num6 / 2)));
+                    case 3: // Ejemplo: 12 ÷ 3 × (4 - 2) + 5 (división exacta)
+                        num1 = getRandomInt(1, 10) * getRandomInt(1, 5); // Múltiplo para asegurar división exacta
+                        num2 = getRandomInt(1, 5);
+                        num3 = getRandomInt(1, 10);
+                        num4 = getRandomInt(1, 10);
+                        num5 = getRandomInt(1, 10);
+                        
+                        // Asegurar que la división sea exacta
+                        while (num1 % num2 !== 0) {
+                            num1 = getRandomInt(1, 10) * getRandomInt(1, 5);
+                        }
+                        
+                        exerciseString = `${num1} ÷ ${num2} × (${num3} - ${num4}) + ${num5}`;
+                        correctAnswer = (num1 / num2) * (num3 - num4) + num5;
+                        break;
+                        
+                    case 4: // Ejemplo: -[15 ÷ 3 + 2] × (4 - 6)
+                        num1 = getRandomInt(1, 10) * getRandomInt(1, 5); // Múltiplo para asegurar división exacta
+                        num2 = getRandomInt(1, 5);
+                        num3 = getRandomInt(1, 10);
+                        num4 = getRandomInt(1, 10);
+                        num5 = getRandomInt(1, 10);
+                        
+                        // Asegurar que la división sea exacta
+                        while (num1 % num2 !== 0) {
+                            num1 = getRandomInt(1, 10) * getRandomInt(1, 5);
+                        }
+                        
+                        exerciseString = `-[${num1} ÷ ${num2} + ${num3}] × (${num4} - ${num5})`;
+                        correctAnswer = -((num1 / num2) + num3) * (num4 - num5);
                         break;
                 }
                 
@@ -440,18 +460,18 @@
                 correctAnswer = exerciseData.correctAnswer;
                 currentExercise = exerciseData.exerciseString;
                 
-                // Redondear la respuesta si es necesario (para divisiones)
+                // Asegurar que la respuesta sea un número entero
                 if (!Number.isInteger(correctAnswer)) {
-                    correctAnswer = Math.round(correctAnswer * 100) / 100;
+                    correctAnswer = Math.round(correctAnswer);
                 }
             }
             
             // Verificar la respuesta
             function checkAnswer() {
-                const userAnswer = parseFloat(answerInput.value);
+                const userAnswer = parseInt(answerInput.value);
                 
                 if (isNaN(userAnswer)) {
-                    resultDiv.textContent = "Por favor, introduce un número válido";
+                    resultDiv.textContent = "Per favor, introdueix un número vàlid";
                     resultDiv.className = "result incorrect";
                     return;
                 }
@@ -459,24 +479,22 @@
                 totalCount++;
                 totalCountElem.textContent = totalCount;
                 
-                // Comparar respuestas con un margen de error pequeño para números decimales
-                if (Math.abs(userAnswer - correctAnswer) < 0.01) {
-                    resultDiv.textContent = "¡Correcto!";
+                if (userAnswer === correctAnswer) {
+                    resultDiv.textContent = "¡Correcte!";
                     resultDiv.className = "result correct";
                     correctCount++;
                     correctCountElem.textContent = correctCount;
                 } else {
-                    resultDiv.textContent = `Incorrecto. La respuesta correcta es ${correctAnswer}.`;
+                    resultDiv.textContent = `Incorrecte. La resposta correcta és ${correctAnswer}.`;
                     resultDiv.className = "result incorrect";
                     incorrectCount++;
                     incorrectCountElem.textContent = incorrectCount;
                 }
             }
             
-            // Mostrar la solución paso a paso
+            // Mostrar la solución
             function showSolution() {
-                // En una implementación más avanzada, aquí se mostraría el proceso paso a paso
-                resultDiv.textContent = `Solución: ${currentExercise} = ${correctAnswer}`;
+                resultDiv.textContent = `Solució: ${currentExercise} = ${correctAnswer}`;
                 resultDiv.className = "result";
             }
             
