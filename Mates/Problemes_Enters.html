@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content="Mates, Enters, Vedruna Gràcia, Problemes">
+    <title>Mates - Problemes Enters</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            color: #333;
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            margin-top: 20px;
+        }
+        
+        h1 {
+            text-align: center;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            margin-bottom: 10px;
+            font-size: 2.5rem;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+            font-size: 1.2rem;
+        }
+        
+        .instructions {
+            background-color: #e8f4fc;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            border-left: 5px solid #3498db;
+        }
+        
+        .instructions h2 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        
+        .problem-container {
+            background-color: #f9f9f9;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e0e0e0;
+        }
+        
+        .problem {
+            font-size: 1.4rem;
+            text-align: left;
+            margin-bottom: 25px;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            min-height: 150px;
+            line-height: 1.8;
+        }
+        
+        .question {
+            font-weight: bold;
+            margin-top: 15px;
+            color: #2c3e50;
+            font-size: 1.3rem;
+        }
+        
+        .input-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        input[type="number"] {
+            padding: 12px 15px;
+            font-size: 1.2rem;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            width: 200px;
+            transition: border-color 0.3s;
+        }
+        
+        input[type="number"]:focus {
+            border-color: #3498db;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.3);
+        }
+        
+        input[type="number"]:disabled {
+            background-color: #f5f5f5;
+            color: #999;
+            cursor: not-allowed;
+        }
+        
+        button {
+            padding: 12px 25px;
+            background: linear-gradient(to right, #3498db, #2980b9);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: bold;
+            transition: all 0.3s;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        button:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+        }
+        
+        button:active:not(:disabled) {
+            transform: translateY(0);
+        }
+        
+        button:disabled {
+            background: linear-gradient(to right, #95a5a6, #7f8c8d);
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+        
+        .check-btn {
+            background: linear-gradient(to right, #2ecc71, #27ae60);
+        }
+        
+        .new-problem-btn {
+            background: linear-gradient(to right, #e74c3c, #c0392b);
+        }
+        
+        .result {
+            margin-top: 20px;
+            font-weight: bold;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 1.2rem;
+            transition: all 0.3s;
+        }
+        
+        .correct {
+            color: #27ae60;
+            background-color: #d5f4e6;
+            border: 2px solid #27ae60;
+        }
+        
+        .incorrect {
+            color: #e74c3c;
+            background-color: #fadbd8;
+            border: 2px solid #e74c3c;
+        }
+        
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .complexity-controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .complexity-btn {
+            padding: 10px 20px;
+            background: linear-gradient(to right, #9b59b6, #8e44ad);
+            font-size: 1rem;
+        }
+        
+        .complexity-btn.active {
+            background: linear-gradient(to right, #e67e22, #d35400);
+            box-shadow: 0 0 0 3px rgba(230, 126, 34, 0.5);
+        }
+        
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 30px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            font-weight: bold;
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 1.5rem;
+            color: #3498db;
+        }
+        
+        footer {
+            margin-top: 30px;
+            text-align: center;
+            color: white;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                padding: 15px;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .problem {
+                font-size: 1.2rem;
+                padding: 15px;
+            }
+            
+            .input-container {
+                flex-direction: column;
+            }
+            
+            input[type="number"] {
+                width: 100%;
+            }
+            
+            .controls {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>MATES</h1>
+    <p class="subtitle">Problemes matemàtics amb enters</p>
+    
+    <div class="container">
+        <div class="instructions">
+            <h2>Instruccions:</h2>
+            <p>Llegeix atentament cada problema i resol-lo utilitzant nombres enters.</p>
+            <p>Escriu la resposta i verifica-la amb el botó "Verifica la resposta".</p>
+            <p>Pots seleccionar la dificultat dels problemes segons el teu nivell.</p>
+            <p>Un cop verificada la resposta o vista la solució, no es podrà enviar una altra resposta per al mateix problema.</p>
+        </div>
+        
+        <div class="complexity-controls">
+            <button id="medium-complexity" class="complexity-btn active">Nivell Mitjà</button>
+            <button id="high-complexity" class="complexity-btn">Nivell Difícil</button>
+        </div>
+        
+        <div class="problem-container">
+            <div class="problem" id="problem-text">El problema apareixerà aquí</div>
+            <div class="question" id="question-text">Pregunta:</div>
+            
+            <div class="input-container">
+                <input type="number" id="answer-input" placeholder="Introdueix la resposta">
+                <button id="check-btn" class="check-btn">Verificar resposta</button>
+            </div>
+            
+            <div class="result" id="result"></div>
+        </div>
+        
+        <div class="controls">
+            <button id="new-problem-btn" class="new-problem-btn">Nou problema</button>
+            <button id="show-solution-btn">👀 Solució</button>
+        </div>
+        
+        <div class="stats">
+            <div class="stat-item">
+                <div class="stat-value" id="correct-count">0</div>
+                <div>Correctes</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="incorrect-count">0</div>
+                <div>Incorrectes</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="total-count">0</div>
+                <div>Total</div>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <p>Generador de problemes Enters. v1.1 &copy;GoogleClasses 2025</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const problemText = document.getElementById('problem-text');
+            const questionText = document.getElementById('question-text');
+            const answerInput = document.getElementById('answer-input');
+            const checkBtn = document.getElementById('check-btn');
+            const resultDiv = document.getElementById('result');
+            const newProblemBtn = document.getElementById('new-problem-btn');
+            const showSolutionBtn = document.getElementById('show-solution-btn');
+            const mediumComplexityBtn = document.getElementById('medium-complexity');
+            const highComplexityBtn = document.getElementById('high-complexity');
+            const correctCountElem = document.getElementById('correct-count');
+            const incorrectCountElem = document.getElementById('incorrect-count');
+            const totalCountElem = document.getElementById('total-count');
+            
+            let currentProblem = null;
+            let correctAnswer = null;
+            let currentComplexity = 'medium';
+            let correctCount = 0;
+            let incorrectCount = 0;
+            let totalCount = 0;
+            let answerSubmitted = false;
+            let solutionShown = false;
+            
+            // Generar un número aleatorio entre min y max (incluyendo negativos)
+            function getRandomInt(min, max) {
+                return Math.floor(Math.random() * (max - min + 1)) + min;
+            }
+            
+            // Generar un problema de complejidad media
+            function generateMediumComplexityProblem() {
+                const problemType = getRandomInt(0, 5);
+                let num1, num2, num3, num4, problemString, question, answer;
+                
+                switch(problemType) {
+                    case 0: // Problema de temperatura
+                        num1 = getRandomInt(-10, 30); // Temperatura inicial
+                        num2 = getRandomInt(5, 15);   // Incremento
+                        num3 = getRandomInt(5, 15);   // Decremento
+                        
+                        problemString = `La temperatura a Barcelona era de ${num1}°C. Al matí va pujar ${num2}°C i a la tarda va baixar ${num3}°C.`;
+                        question = "Quina és la temperatura final?";
+                        answer = num1 + num2 - num3;
+                        break;
+                        
+                    case 1: // Problema de compte bancari
+                        num1 = getRandomInt(100, 500); // Saldo inicial
+                        num2 = getRandomInt(50, 150);  // Ingreso
+                        num3 = getRandomInt(30, 100);  // Retirada 1
+                        num4 = getRandomInt(20, 80);   // Retirada 2
+                        
+                        problemString = `En Joan té ${num1}€ al seu compte bancari. Aquest mes ha ingressat ${num2}€, però ha retirat ${num3}€ per pagar el lloguer i ${num4}€ per les despeses.`;
+                        question = "Quin és el saldo final del compte?";
+                        answer = num1 + num2 - num3 - num4;
+                        break;
+                        
+                    case 2: // Problema d'altitud
+                        num1 = getRandomInt(500, 2000); // Altitud base
+                        num2 = getRandomInt(100, 500);  // Ascens
+                        num3 = getRandomInt(50, 200);   // Descens
+                        
+                        problemString = `Un muntanyenc es troba a ${num1} metres d'altitud. Puja ${num2} metres més i després baixa ${num3} metres.`;
+                        question = "A quina altitud es troba ara?";
+                        answer = num1 + num2 - num3;
+                        break;
+                        
+                    case 3: // Problema de deutes
+                        num1 = getRandomInt(50, 200);  // Deute inicial
+                        num2 = getRandomInt(20, 100);  // Pagament 1
+                        num3 = getRandomInt(30, 80);   // Nou deute
+                        num4 = getRandomInt(10, 50);   // Pagament 2
+                        
+                        problemString = `La Maria deu ${num1}€. Paga ${num2}€, però després es gasta ${num3}€ més que no té. Finalment, paga altres ${num4}€.`;
+                        question = "Quant deu ara la Maria? (Si deu, la resposta serà negativa)";
+                        answer = num1 - num2 + num3 - num4;
+                        break;
+                        
+                    case 4: // Problema de botiga
+                        num1 = getRandomInt(20, 100);  // Producte 1
+                        num2 = getRandomInt(15, 80);   // Producte 2
+                        num3 = getRandomInt(5, 30);    // Descompte
+                        num4 = getRandomInt(50, 200);  // Diners entregats
+                        
+                        problemString = `En una botiga, una camiseta val ${num1}€ i uns pantalons ${num2}€. Avui hi ha un descompte de ${num3}€ en compres superiors a 30€.`;
+                        question = `Si compres els dos productes i pagues amb ${num4}€, quant et tornaran?`;
+                        answer = num4 - (num1 + num2 - num3);
+                        break;
+                        
+                    case 5: // Problema de pes
+                        num1 = getRandomInt(60, 90);   // Pes inicial
+                        num2 = getRandomInt(2, 8);     // Pèrdua de pes
+                        num3 = getRandomInt(1, 5);     // Guany de pes
+                        
+                        problemString = `En Pere pesa ${num1}kg. Després de fer dieta, perd ${num2}kg, però durant les festes guanya ${num3}kg.`;
+                        question = "Quant pesa ara en Pere?";
+                        answer = num1 - num2 + num3;
+                        break;
+                }
+                
+                return { problemString, question, answer };
+            }
+            
+            // Generar un problema de alta complejidad
+            function generateHighComplexityProblem() {
+                const problemType = getRandomInt(0, 5);
+                let num1, num2, num3, num4, num5, num6, problemString, question, answer;
+                
+                switch(problemType) {
+                    case 0: // Problema d'inversions
+                        num1 = getRandomInt(1000, 5000); // Inversió inicial
+                        num2 = getRandomInt(5, 15);      // Benefici primer any (%)
+                        num3 = getRandomInt(3, 10);      // Pèrdua segon any (%)
+                        num4 = getRandomInt(500, 2000);  // Inversió addicional
+                        
+                        problemString = `Una persona inverteix ${num1}€. El primer any guanya un ${num2}%, el segon any perd un ${num3}%, i després inverteix ${num4}€ més.`;
+                        question = "Quant diners té després de totes aquestes operacions?";
+                        answer = Math.round(num1 * (1 + num2/100) * (1 - num3/100) + num4);
+                        break;
+                        
+                    case 1: // Problema de viatge
+                        num1 = getRandomInt(200, 600);  // Distància total
+                        num2 = getRandomInt(50, 150);   // Primera etapa
+                        num3 = getRandomInt(30, 100);   // Segona etapa
+                        num4 = getRandomInt(20, 80);    // Tercera etapa
+                        num5 = getRandomInt(10, 40);    // Retorn parcial
+                        
+                        problemString = `Un viatjant ha de recórrer ${num1}km. El primer dia fa ${num2}km, el segon ${num3}km, el tercer ${num4}km, però després torna enrere ${num5}km per recollir alguna cosa.`;
+                        question = "Quant li falta per arribar al destí?";
+                        answer = num1 - (num2 + num3 + num4 - num5);
+                        break;
+                        
+                    case 2: // Problema de fàbrica
+                        num1 = getRandomInt(100, 300);  // Producció diària
+                        num2 = getRandomInt(3, 7);      // Dies treballats
+                        num3 = getRandomInt(50, 150);   // Ventes setmana 1
+                        num4 = getRandomInt(30, 100);   // Ventes setmana 2
+                        num5 = getRandomInt(20, 80);    // Devolucions
+                        
+                        problemString = `Una fàbrica produeix ${num1} unitats diàries. Després de ${num2} dies de treball, ven ${num3} unitats la primera setmana i ${num4} unitats la segona, però li retornen ${num5} unitats.`;
+                        question = "Quantes unitats queden en estoc?";
+                        answer = num1 * num2 - num3 - num4 + num5;
+                        break;
+                        
+                    case 3: // Problema d'ascensor
+                        num1 = getRandomInt(-3, 10);    // Pis inicial
+                        num2 = getRandomInt(1, 5);      // Moviment 1
+                        num3 = getRandomInt(1, 5);      // Moviment 2
+                        num4 = getRandomInt(1, 5);      // Moviment 3
+                        num5 = getRandomInt(1, 5);      // Moviment 4
+                        
+                        // Determinar direccions aleatòries (positius = amunt, negatius = avall)
+                        const dir2 = Math.random() > 0.5 ? num2 : -num2;
+                        const dir3 = Math.random() > 0.5 ? num3 : -num3;
+                        const dir4 = Math.random() > 0.5 ? num4 : -num4;
+                        const dir5 = Math.random() > 0.5 ? num5 : -num5;
+                        
+                        problemString = `Un ascensor es troba al pis ${num1}. Puja o baixa ${Math.abs(dir2)} pisos, després ${Math.abs(dir3)} pisos, després ${Math.abs(dir4)} pisos i finalment ${Math.abs(dir5)} pisos.`;
+                        question = "A quin pis es troba ara l'ascensor?";
+                        answer = num1 + dir2 + dir3 + dir4 + dir5;
+                        break;
+                        
+                    case 4: // Problema de joc de cartes
+                        num1 = getRandomInt(100, 300);  // Punts inicials
+                        num2 = getRandomInt(10, 50);    // Ronda 1
+                        num3 = getRandomInt(10, 50);    // Ronda 2
+                        num4 = getRandomInt(10, 50);    // Ronda 3
+                        num5 = getRandomInt(5, 25);     // Penalització
+                        num6 = getRandomInt(10, 40);    // Bonus
+                        
+                        // Determinar guanyades (positives) o perdudes (negatives)
+                        const ronda1 = Math.random() > 0.5 ? num2 : -num2;
+                        const ronda2 = Math.random() > 0.5 ? num3 : -num3;
+                        const ronda3 = Math.random() > 0.5 ? num4 : -num4;
+                        
+                        problemString = `En un joc de cartes, un jugador comença amb ${num1} punts. A la primera ronda ${ronda1 > 0 ? 'guanya' : 'perd'} ${Math.abs(ronda1)} punts, a la segona ${ronda2 > 0 ? 'guanya' : 'perd'} ${Math.abs(ronda2)} punts, a la tercera ${ronda3 > 0 ? 'guanya' : 'perd'} ${Math.abs(ronda3)} punts. Després té una penalització de ${num5} punts i un bonus de ${num6} punts.`;
+                        question = "Quants punts té al final?";
+                        answer = num1 + ronda1 + ronda2 + ronda3 - num5 + num6;
+                        break;
+                        
+                    case 5: // Problema de pressupost
+                        num1 = getRandomInt(500, 2000); // Pressupost inicial
+                        num2 = getRandomInt(100, 400);  // Despesa 1
+                        num3 = getRandomInt(80, 300);   // Despesa 2
+                        num4 = getRandomInt(50, 200);   // Despesa 3
+                        num5 = getRandomInt(200, 600);  // Ingrés extra
+                        num6 = getRandomInt(30, 120);   // Despesa imprevista
+                        
+                        problemString = `Una família té un pressupost mensual de ${num1}€. Es gasten ${num2}€ en el lloguer, ${num3}€ en menjar i ${num4}€ en transport. Rep un ingrés extra de ${num5}€, però té una despesa imprevista de ${num6}€.`;
+                        question = "Quant diners els sobra o els falta al final del mes? (Si falta, la resposta serà negativa)";
+                        answer = num1 - num2 - num3 - num4 + num5 - num6;
+                        break;
+                }
+                
+                return { problemString, question, answer };
+            }
+            
+            // Generar un problema aleatorio
+            function generateProblem() {
+                let problemData;
+                
+                if (currentComplexity === 'medium') {
+                    problemData = generateMediumComplexityProblem();
+                } else {
+                    problemData = generateHighComplexityProblem();
+                }
+                
+                problemText.textContent = problemData.problemString;
+                questionText.textContent = problemData.question;
+                correctAnswer = problemData.answer;
+                currentProblem = problemData.problemString;
+                
+                // Restablecer el estado de envío
+                answerSubmitted = false;
+                solutionShown = false;
+                enableAnswerSubmission();
+            }
+            
+            // Habilitar el envío de respuestas
+            function enableAnswerSubmission() {
+                answerInput.disabled = false;
+                checkBtn.disabled = false;
+                answerInput.placeholder = "Introdueix la resposta";
+                answerInput.value = "";
+                resultDiv.textContent = "";
+                resultDiv.className = "result";
+            }
+            
+            // Deshabilitar el envío de respuestas
+            function disableAnswerSubmission() {
+                answerInput.disabled = true;
+                checkBtn.disabled = true;
+                answerInput.placeholder = "Resposta ja enviada";
+            }
+            
+            // Verificar la respuesta
+            function checkAnswer() {
+                if (answerSubmitted || solutionShown) {
+                    return; // No permitir múltiples envíos
+                }
+                
+                const userAnswer = parseInt(answerInput.value);
+                
+                if (isNaN(userAnswer)) {
+                    resultDiv.textContent = "Per favor, introdueix un número vàlid";
+                    resultDiv.className = "result incorrect";
+                    return;
+                }
+                
+                totalCount++;
+                totalCountElem.textContent = totalCount;
+                
+                if (userAnswer === correctAnswer) {
+                    resultDiv.textContent = "¡Correcte!";
+                    resultDiv.className = "result correct";
+                    correctCount++;
+                    correctCountElem.textContent = correctCount;
+                } else {
+                    resultDiv.textContent = `Incorrecte. La resposta correcta és ${correctAnswer}.`;
+                    resultDiv.className = "result incorrect";
+                    incorrectCount++;
+                    incorrectCountElem.textContent = incorrectCount;
+                }
+                
+                // Marcar como respuesta enviada
+                answerSubmitted = true;
+                disableAnswerSubmission();
+            }
+            
+            // Mostrar la solución
+            function showSolution() {
+                if (solutionShown) {
+                    return; // No permitir mostrar la solución múltiples veces
+                }
+                
+                resultDiv.textContent = `Solució: ${correctAnswer}`;
+                resultDiv.className = "result";
+                
+                // Marcar como solución mostrada
+                solutionShown = true;
+                disableAnswerSubmission();
+                
+                // Si no se había enviado respuesta, contar como incorrecta
+                if (!answerSubmitted) {
+                    totalCount++;
+                    totalCountElem.textContent = totalCount;
+                    incorrectCount++;
+                    incorrectCountElem.textContent = incorrectCount;
+                    answerSubmitted = true; // Marcar como enviada para evitar duplicados
+                }
+            }
+            
+            // Limpiar y generar nuevo problema
+            function newProblem() {
+                generateProblem();
+                answerInput.focus();
+            }
+            
+            // Cambiar complejidad
+            function setComplexity(complexity) {
+                currentComplexity = complexity;
+                
+                if (complexity === 'medium') {
+                    mediumComplexityBtn.classList.add('active');
+                    highComplexityBtn.classList.remove('active');
+                } else {
+                    mediumComplexityBtn.classList.remove('active');
+                    highComplexityBtn.classList.add('active');
+                }
+                
+                newProblem();
+            }
+            
+            // Event listeners
+            checkBtn.addEventListener('click', checkAnswer);
+            
+            answerInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter' && !answerSubmitted && !solutionShown) {
+                    checkAnswer();
+                }
+            });
+            
+            newProblemBtn.addEventListener('click', newProblem);
+            showSolutionBtn.addEventListener('click', showSolution);
+            
+            mediumComplexityBtn.addEventListener('click', function() {
+                setComplexity('medium');
+            });
+            
+            highComplexityBtn.addEventListener('click', function() {
+                setComplexity('high');
+            });
+            
+            // Generar el primer problema al cargar la página
+            generateProblem();
+            answerInput.focus();
+        });
+    </script>
+</body>
+</html>
