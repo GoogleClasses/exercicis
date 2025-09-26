@@ -109,6 +109,12 @@
             box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.3);
         }
         
+        input[type="number"]:disabled {
+            background-color: #f5f5f5;
+            color: #999;
+            cursor: not-allowed;
+        }
+        
         button {
             padding: 12px 25px;
             background: linear-gradient(to right, #3498db, #2980b9);
@@ -122,13 +128,19 @@
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
         
-        button:hover {
+        button:hover:not(:disabled) {
             transform: translateY(-2px);
             box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
         }
         
-        button:active {
+        button:active:not(:disabled) {
             transform: translateY(0);
+        }
+        
+        button:disabled {
+            background: linear-gradient(to right, #95a5a6, #7f8c8d);
+            cursor: not-allowed;
+            opacity: 0.7;
         }
         
         .check-btn {
@@ -251,6 +263,7 @@
             <p>Escriu la resposta i Verifica-la amb l'enter o amb el botó de "Verifica la resposta"</p>
             <p>Pots sel·leccionar la dificultat dels exercicis segons el teu nivell de càlcul.</p>
             <p>A la part inferior, pots veure el progrés (Preguntes correctes o fallides)</p>
+            <p><strong>Nota:</strong> Un cop verificada la resposta o vista la solució, no es podrà enviar una altra resposta per al mateix exercici.</p>
         </div>
         
         <div class="complexity-controls">
@@ -291,7 +304,7 @@
     </div>
     
     <footer>
-        <p>Generador d'exercicis Enters. v1.5 &copy;GoogleClasses 2025</p>
+        <p>Generador d'exercicis Enters. &copy;GoogleClasses 2025</p>
     </footer>
 
     <script>
@@ -314,6 +327,8 @@
             let correctCount = 0;
             let incorrectCount = 0;
             let totalCount = 0;
+            let answerSubmitted = false;
+            let solutionShown = false;
             
             // Generar un número aleatorio entre min y max (incluyendo negativos)
             function getRandomInt(min, max) {
@@ -464,10 +479,36 @@
                 if (!Number.isInteger(correctAnswer)) {
                     correctAnswer = Math.round(correctAnswer);
                 }
+                
+                // Restablecer el estado de envío
+                answerSubmitted = false;
+                solutionShown = false;
+                enableAnswerSubmission();
+            }
+            
+            // Habilitar el envío de respuestas
+            function enableAnswerSubmission() {
+                answerInput.disabled = false;
+                checkBtn.disabled = false;
+                answerInput.placeholder = "Introdueix la resposta";
+                answerInput.value = "";
+                resultDiv.textContent = "";
+                resultDiv.className = "result";
+            }
+            
+            // Deshabilitar el envío de respuestas
+            function disableAnswerSubmission() {
+                answerInput.disabled = true;
+                checkBtn.disabled = true;
+                answerInput.placeholder = "Resposta ja enviada";
             }
             
             // Verificar la respuesta
             function checkAnswer() {
+                if (answerSubmitted || solutionShown) {
+                    return; // No permitir múltiples envíos
+                }
+                
                 const userAnswer = parseInt(answerInput.value);
                 
                 if (isNaN(userAnswer)) {
@@ -490,19 +531,37 @@
                     incorrectCount++;
                     incorrectCountElem.textContent = incorrectCount;
                 }
+                
+                // Marcar como respuesta enviada
+                answerSubmitted = true;
+                disableAnswerSubmission();
             }
             
             // Mostrar la solución
             function showSolution() {
+                if (solutionShown) {
+                    return; // No permitir mostrar la solución múltiples veces
+                }
+                
                 resultDiv.textContent = `Solució: ${currentExercise} = ${correctAnswer}`;
                 resultDiv.className = "result";
+                
+                // Marcar como solución mostrada
+                solutionShown = true;
+                disableAnswerSubmission();
+                
+                // Si no se había enviado respuesta, contar como incorrecta
+                if (!answerSubmitted) {
+                    totalCount++;
+                    totalCountElem.textContent = totalCount;
+                    incorrectCount++;
+                    incorrectCountElem.textContent = incorrectCount;
+                    answerSubmitted = true; // Marcar como enviada para evitar duplicados
+                }
             }
             
             // Limpiar y generar nuevo ejercicio
             function newExercise() {
-                answerInput.value = "";
-                resultDiv.textContent = "";
-                resultDiv.className = "result";
                 generateExercise();
                 answerInput.focus();
             }
@@ -526,7 +585,7 @@
             checkBtn.addEventListener('click', checkAnswer);
             
             answerInput.addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
+                if (e.key === 'Enter' && !answerSubmitted && !solutionShown) {
                     checkAnswer();
                 }
             });
