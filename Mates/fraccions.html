@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content="Mates, Fraccions, Vedruna Gràcia, Problemes">
+    <title>Mates - Problemes Fraccions</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            color: #333;
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            margin-top: 20px;
+        }
+        
+        h1 {
+            text-align: center;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            margin-bottom: 10px;
+            font-size: 2.5rem;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+            font-size: 1.2rem;
+        }
+        
+        .instructions {
+            background-color: #e8f4fc;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            border-left: 5px solid #3498db;
+        }
+        
+        .instructions h2 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        
+        .problem-container {
+            background-color: #f9f9f9;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e0e0e0;
+        }
+        
+        .problem {
+            font-size: 1.4rem;
+            text-align: left;
+            margin-bottom: 25px;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            min-height: 150px;
+            line-height: 1.8;
+        }
+        
+        .fraction {
+            display: inline-block;
+            text-align: center;
+            vertical-align: middle;
+            margin: 0 5px;
+        }
+        
+        .fraction span {
+            display: block;
+        }
+        
+        .fraction .numerator {
+            border-bottom: 1px solid black;
+            padding: 0 5px;
+        }
+        
+        .fraction .denominator {
+            padding: 0 5px;
+        }
+        
+        .question {
+            font-weight: bold;
+            margin-top: 15px;
+            color: #2c3e50;
+            font-size: 1.3rem;
+        }
+        
+        .input-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        input[type="text"] {
+            padding: 12px 15px;
+            font-size: 1.2rem;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            width: 200px;
+            transition: border-color 0.3s;
+        }
+        
+        input[type="text"]:focus {
+            border-color: #3498db;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.3);
+        }
+        
+        input[type="text"]:disabled {
+            background-color: #f5f5f5;
+            color: #999;
+            cursor: not-allowed;
+        }
+        
+        button {
+            padding: 12px 25px;
+            background: linear-gradient(to right, #3498db, #2980b9);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: bold;
+            transition: all 0.3s;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        button:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+        }
+        
+        button:active:not(:disabled) {
+            transform: translateY(0);
+        }
+        
+        button:disabled {
+            background: linear-gradient(to right, #95a5a6, #7f8c8d);
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+        
+        .check-btn {
+            background: linear-gradient(to right, #2ecc71, #27ae60);
+        }
+        
+        .new-problem-btn {
+            background: linear-gradient(to right, #e74c3c, #c0392b);
+        }
+        
+        .result {
+            margin-top: 20px;
+            font-weight: bold;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 1.2rem;
+            transition: all 0.3s;
+        }
+        
+        .correct {
+            color: #27ae60;
+            background-color: #d5f4e6;
+            border: 2px solid #27ae60;
+        }
+        
+        .incorrect {
+            color: #e74c3c;
+            background-color: #fadbd8;
+            border: 2px solid #e74c3c;
+        }
+        
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .complexity-controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .complexity-btn {
+            padding: 10px 20px;
+            background: linear-gradient(to right, #9b59b6, #8e44ad);
+            font-size: 1rem;
+        }
+        
+        .complexity-btn.active {
+            background: linear-gradient(to right, #e67e22, #d35400);
+            box-shadow: 0 0 0 3px rgba(230, 126, 34, 0.5);
+        }
+        
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 30px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            font-weight: bold;
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 1.5rem;
+            color: #3498db;
+        }
+        
+        .format-info {
+            background-color: #fff8e1;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+            font-size: 0.9rem;
+            border-left: 3px solid #ffc107;
+        }
+        
+        footer {
+            margin-top: 30px;
+            text-align: center;
+            color: white;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                padding: 15px;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .problem {
+                font-size: 1.2rem;
+                padding: 15px;
+            }
+            
+            .input-container {
+                flex-direction: column;
+            }
+            
+            input[type="text"] {
+                width: 100%;
+            }
+            
+            .controls {
+                flex-direction: column;
+            }
+            
+            .complexity-controls {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>MATES</h1>
+    <p class="subtitle">Problemes matemàtics amb fraccions</p>
+    
+    <div class="container">
+        <div class="instructions">
+            <h2>Instruccions:</h2>
+            <p>Llegeix atentament cada problema i resol-lo utilitzant fraccions.</p>
+            <p>Escriu la resposta en el format indicat i verifica-la amb el botó "Verifica la resposta".</p>
+            <p>Pots seleccionar el tipus de problema segons el que vulguis practicar.</p>
+            <p><strong>Format de les respostes:</strong></p>
+            <ul>
+                <li>Fracció: "a/b" (exemple: 3/4)</li>
+                <li>Número mixt: "a b/c" (exemple: 1 3/4)</li>
+                <li>Ordenar fraccions: "a/b, c/d, e/f" (de menor a major)</li>
+            </ul>
+            <p>Un cop verificada la resposta o vista la solució, no es podrà enviar una altra resposta per al mateix problema.</p>
+        </div>
+        
+        <div class="complexity-controls">
+            <button id="simplify-btn" class="complexity-btn active">Simplificar</button>
+            <button id="operations-btn" class="complexity-btn">Operacions</button>
+            <button id="mixed-btn" class="complexity-btn">Nombres Mixtos</button>
+            <button id="order-btn" class="complexity-btn">Ordenar</button>
+        </div>
+        
+        <div class="problem-container">
+            <div class="problem" id="problem-text">El problema apareixerà aquí</div>
+            <div class="question" id="question-text">Pregunta:</div>
+            <div class="format-info" id="format-info">Format de resposta: fracció (a/b)</div>
+            
+            <div class="input-container">
+                <input type="text" id="answer-input" placeholder="Introdueix la resposta">
+                <button id="check-btn" class="check-btn">Verificar resposta</button>
+            </div>
+            
+            <div class="result" id="result"></div>
+        </div>
+        
+        <div class="controls">
+            <button id="new-problem-btn" class="new-problem-btn">Nou problema</button>
+            <button id="show-solution-btn">👀 Solució</button>
+        </div>
+        
+        <div class="stats">
+            <div class="stat-item">
+                <div class="stat-value" id="correct-count">0</div>
+                <div>Correctes</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="incorrect-count">0</div>
+                <div>Incorrectes</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="total-count">0</div>
+                <div>Total</div>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <p>Generador de problemes amb Fraccions. v1 &copy;GoogleClasses 2025</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const problemText = document.getElementById('problem-text');
+            const questionText = document.getElementById('question-text');
+            const formatInfo = document.getElementById('format-info');
+            const answerInput = document.getElementById('answer-input');
+            const checkBtn = document.getElementById('check-btn');
+            const resultDiv = document.getElementById('result');
+            const newProblemBtn = document.getElementById('new-problem-btn');
+            const showSolutionBtn = document.getElementById('show-solution-btn');
+            const simplifyBtn = document.getElementById('simplify-btn');
+            const operationsBtn = document.getElementById('operations-btn');
+            const mixedBtn = document.getElementById('mixed-btn');
+            const orderBtn = document.getElementById('order-btn');
+            const correctCountElem = document.getElementById('correct-count');
+            const incorrectCountElem = document.getElementById('incorrect-count');
+            const totalCountElem = document.getElementById('total-count');
+            
+            let currentProblem = null;
+            let correctAnswer = null;
+            let currentType = 'simplify';
+            let correctCount = 0;
+            let incorrectCount = 0;
+            let totalCount = 0;
+            let answerSubmitted = false;
+            let solutionShown = false;
+            
+            // Función para calcular el MCD
+            function gcd(a, b) {
+                return b === 0 ? a : gcd(b, a % b);
+            }
+            
+            // Función para simplificar una fracción
+            function simplifyFraction(numerator, denominator) {
+                const divisor = gcd(numerator, denominator);
+                return {
+                    numerator: numerator / divisor,
+                    denominator: denominator / divisor
+                };
+            }
+            
+            // Generar un número aleatorio entre min y max
+            function getRandomInt(min, max) {
+                return Math.floor(Math.random() * (max - min + 1)) + min;
+            }
+            
+            // Crear elemento HTML para una fracción
+            function createFractionHTML(numerator, denominator) {
+                return `<div class="fraction">
+                    <span class="numerator">${numerator}</span>
+                    <span class="denominator">${denominator}</span>
+                </div>`;
+            }
+            
+            // Generar un problema de simplificación
+            function generateSimplifyProblem() {
+                let numerator = getRandomInt(2, 30);
+                let denominator = getRandomInt(2, 30);
+                
+                // Asegurar que la fracción se puede simplificar
+                while (gcd(numerator, denominator) === 1) {
+                    numerator = getRandomInt(2, 30);
+                    denominator = getRandomInt(2, 30);
+                }
+                
+                const simplified = simplifyFraction(numerator, denominator);
+                
+                problemText.innerHTML = `Simplifica la següent fracció: ${createFractionHTML(numerator, denominator)}`;
+                questionText.textContent = "Escriu la fracció simplificada:";
+                formatInfo.textContent = "Format de resposta: fracció (a/b)";
+                
+                correctAnswer = `${simplified.numerator}/${simplified.denominator}`;
+                
+                return { problem: `Simplifica ${numerator}/${denominator}`, answer: correctAnswer };
+            }
+            
+            // Generar un problema de operaciones con fracciones
+            function generateOperationProblem() {
+                const operationType = getRandomInt(0, 3); // 0: suma, 1: resta, 2: multiplicación, 3: división
+                let num1, den1, num2, den2, problemHTML, answer;
+                
+                switch(operationType) {
+                    case 0: // Suma
+                        num1 = getRandomInt(1, 10);
+                        den1 = getRandomInt(2, 12);
+                        num2 = getRandomInt(1, 10);
+                        den2 = getRandomInt(2, 12);
+                        
+                        // Encontrar común denominador
+                        const commonDenominator = den1 * den2;
+                        const newNum1 = num1 * den2;
+                        const newNum2 = num2 * den1;
+                        
+                        problemHTML = `Calcula: ${createFractionHTML(num1, den1)} + ${createFractionHTML(num2, den2)}`;
+                        
+                        // Simplificar resultado
+                        const sumResult = simplifyFraction(newNum1 + newNum2, commonDenominator);
+                        answer = `${sumResult.numerator}/${sumResult.denominator}`;
+                        break;
+                        
+                    case 1: // Resta
+                        num1 = getRandomInt(1, 10);
+                        den1 = getRandomInt(2, 12);
+                        num2 = getRandomInt(1, 10);
+                        den2 = getRandomInt(2, 12);
+                        
+                        // Asegurar que el resultado no sea negativo
+                        if (num1/den1 < num2/den2) {
+                            [num1, den1, num2, den2] = [num2, den2, num1, den1];
+                        }
+                        
+                        // Encontrar común denominador
+                        const commonDenominatorSub = den1 * den2;
+                        const newNum1Sub = num1 * den2;
+                        const newNum2Sub = num2 * den1;
+                        
+                        problemHTML = `Calcula: ${createFractionHTML(num1, den1)} - ${createFractionHTML(num2, den2)}`;
+                        
+                        // Simplificar resultado
+                        const subResult = simplifyFraction(newNum1Sub - newNum2Sub, commonDenominatorSub);
+                        answer = `${subResult.numerator}/${subResult.denominator}`;
+                        break;
+                        
+                    case 2: // Multiplicación
+                        num1 = getRandomInt(1, 10);
+                        den1 = getRandomInt(2, 12);
+                        num2 = getRandomInt(1, 10);
+                        den2 = getRandomInt(2, 12);
+                        
+                        problemHTML = `Calcula: ${createFractionHTML(num1, den1)} × ${createFractionHTML(num2, den2)}`;
+                        
+                        // Simplificar resultado
+                        const multResult = simplifyFraction(num1 * num2, den1 * den2);
+                        answer = `${multResult.numerator}/${multResult.denominator}`;
+                        break;
+                        
+                    case 3: // División
+                        num1 = getRandomInt(1, 10);
+                        den1 = getRandomInt(2, 12);
+                        num2 = getRandomInt(1, 10);
+                        den2 = getRandomInt(2, 12);
+                        
+                        problemHTML = `Calcula: ${createFractionHTML(num1, den1)} ÷ ${createFractionHTML(num2, den2)}`;
+                        
+                        // Simplificar resultado
+                        const divResult = simplifyFraction(num1 * den2, den1 * num2);
+                        answer = `${divResult.numerator}/${divResult.denominator}`;
+                        break;
+                }
+                
+                problemText.innerHTML = problemHTML;
+                questionText.textContent = "Escriu el resultat com a fracció simplificada:";
+                formatInfo.textContent = "Format de resposta: fracció (a/b)";
+                
+                correctAnswer = answer;
+                
+                return { problem: problemHTML, answer: correctAnswer };
+            }
+            
+            // Generar un problema de números mixtos
+            function generateMixedNumberProblem() {
+                const problemType = getRandomInt(0, 1); // 0: convertir a mixto, 1: convertir a fracción
+                
+                if (problemType === 0) {
+                    // Convertir fracción a número mixto
+                    const numerator = getRandomInt(5, 25);
+                    const denominator = getRandomInt(2, 8);
+                    
+                    problemText.innerHTML = `Converteix a nombre mixt: ${createFractionHTML(numerator, denominator)}`;
+                    questionText.textContent = "Escriu el nombre mixt:";
+                    formatInfo.textContent = "Format de resposta: nombre mixt (a b/c)";
+                    
+                    const whole = Math.floor(numerator / denominator);
+                    const remainder = numerator % denominator;
+                    
+                    if (remainder === 0) {
+                        correctAnswer = `${whole}`;
+                    } else {
+                        const simplifiedRemainder = simplifyFraction(remainder, denominator);
+                        correctAnswer = `${whole} ${simplifiedRemainder.numerator}/${simplifiedRemainder.denominator}`;
+                    }
+                } else {
+                    // Convertir número mixto a fracción
+                    const whole = getRandomInt(1, 5);
+                    const numerator = getRandomInt(1, 5);
+                    const denominator = getRandomInt(2, 8);
+                    
+                    problemText.innerHTML = `Converteix a fracció: ${whole} ${createFractionHTML(numerator, denominator)}`;
+                    questionText.textContent = "Escriu la fracció:";
+                    formatInfo.textContent = "Format de resposta: fracció (a/b)";
+                    
+                    const improperNumerator = whole * denominator + numerator;
+                    const simplified = simplifyFraction(improperNumerator, denominator);
+                    correctAnswer = `${simplified.numerator}/${simplified.denominator}`;
+                }
+                
+                return { problem: problemText.innerHTML, answer: correctAnswer };
+            }
+            
+            // Generar un problema de ordenar fracciones
+            function generateOrderProblem() {
+                const fractions = [];
+                
+                // Generar 3 fracciones diferentes
+                for (let i = 0; i < 3; i++) {
+                    let numerator, denominator;
+                    do {
+                        numerator = getRandomInt(1, 10);
+                        denominator = getRandomInt(2, 12);
+                    } while (fractions.some(f => f.value === numerator/denominator));
+                    
+                    fractions.push({
+                        numerator: numerator,
+                        denominator: denominator,
+                        value: numerator/denominator
+                    });
+                }
+                
+                // Ordenar las fracciones por valor
+                fractions.sort((a, b) => a.value - b.value);
+                
+                // Crear HTML para mostrar las fracciones
+                let fractionsHTML = '';
+                const shuffledFractions = [...fractions].sort(() => Math.random() - 0.5);
+                
+                shuffledFractions.forEach((fraction, index) => {
+                    fractionsHTML += createFractionHTML(fraction.numerator, fraction.denominator);
+                    if (index < shuffledFractions.length - 1) {
+                        fractionsHTML += ', ';
+                    }
+                });
+                
+                problemText.innerHTML = `Ordena les següents fraccions de menor a major: ${fractionsHTML}`;
+                questionText.textContent = "Escriu les fraccions ordenades:";
+                formatInfo.textContent = "Format de resposta: a/b, c/d, e/f";
+                
+                correctAnswer = fractions.map(f => `${f.numerator}/${f.denominator}`).join(', ');
+                
+                return { problem: problemText.innerHTML, answer: correctAnswer };
+            }
+            
+            // Generar un problema aleatorio
+            function generateProblem() {
+                let problemData;
+                
+                switch(currentType) {
+                    case 'simplify':
+                        problemData = generateSimplifyProblem();
+                        break;
+                    case 'operations':
+                        problemData = generateOperationProblem();
+                        break;
+                    case 'mixed':
+                        problemData = generateMixedNumberProblem();
+                        break;
+                    case 'order':
+                        problemData = generateOrderProblem();
+                        break;
+                }
+                
+                currentProblem = problemData.problem;
+                
+                // Restablecer el estado de envío
+                answerSubmitted = false;
+                solutionShown = false;
+                enableAnswerSubmission();
+            }
+            
+            // Habilitar el envío de respuestas
+            function enableAnswerSubmission() {
+                answerInput.disabled = false;
+                checkBtn.disabled = false;
+                answerInput.placeholder = "Introdueix la resposta";
+                answerInput.value = "";
+                resultDiv.textContent = "";
+                resultDiv.className = "result";
+            }
+            
+            // Deshabilitar el envío de respuestas
+            function disableAnswerSubmission() {
+                answerInput.disabled = true;
+                checkBtn.disabled = true;
+                answerInput.placeholder = "Resposta ja enviada";
+            }
+            
+            // Normalizar respuesta para comparación
+            function normalizeAnswer(answer) {
+                return answer.replace(/\s+/g, ' ').trim();
+            }
+            
+            // Verificar la respuesta
+            function checkAnswer() {
+                if (answerSubmitted || solutionShown) {
+                    return; // No permitir múltiples envíos
+                }
+                
+                const userAnswer = normalizeAnswer(answerInput.value);
+                const normalizedCorrect = normalizeAnswer(correctAnswer);
+                
+                if (!userAnswer) {
+                    resultDiv.textContent = "Per favor, introdueix una resposta";
+                    resultDiv.className = "result incorrect";
+                    return;
+                }
+                
+                totalCount++;
+                totalCountElem.textContent = totalCount;
+                
+                if (userAnswer === normalizedCorrect) {
+                    resultDiv.textContent = "¡Correcte!";
+                    resultDiv.className = "result correct";
+                    correctCount++;
+                    correctCountElem.textContent = correctCount;
+                } else {
+                    resultDiv.textContent = `Incorrecte. La resposta correcta és ${correctAnswer}.`;
+                    resultDiv.className = "result incorrect";
+                    incorrectCount++;
+                    incorrectCountElem.textContent = incorrectCount;
+                }
+                
+                // Marcar como respuesta enviada
+                answerSubmitted = true;
+                disableAnswerSubmission();
+            }
+            
+            // Mostrar la solución
+            function showSolution() {
+                if (solutionShown) {
+                    return; // No permitir mostrar la solución múltiples veces
+                }
+                
+                resultDiv.textContent = `Solució: ${correctAnswer}`;
+                resultDiv.className = "result";
+                
+                // Marcar como solución mostrada
+                solutionShown = true;
+                disableAnswerSubmission();
+                
+                // Si no se había enviado respuesta, contar como incorrecta
+                if (!answerSubmitted) {
+                    totalCount++;
+                    totalCountElem.textContent = totalCount;
+                    incorrectCount++;
+                    incorrectCountElem.textContent = incorrectCount;
+                    answerSubmitted = true; // Marcar como enviada para evitar duplicados
+                }
+            }
+            
+            // Limpiar y generar nuevo problema
+            function newProblem() {
+                generateProblem();
+                answerInput.focus();
+            }
+            
+            // Cambiar tipo de problema
+            function setProblemType(type) {
+                currentType = type;
+                
+                // Actualizar botones activos
+                [simplifyBtn, operationsBtn, mixedBtn, orderBtn].forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                
+                switch(type) {
+                    case 'simplify':
+                        simplifyBtn.classList.add('active');
+                        break;
+                    case 'operations':
+                        operationsBtn.classList.add('active');
+                        break;
+                    case 'mixed':
+                        mixedBtn.classList.add('active');
+                        break;
+                    case 'order':
+                        orderBtn.classList.add('active');
+                        break;
+                }
+                
+                newProblem();
+            }
+            
+            // Event listeners
+            checkBtn.addEventListener('click', checkAnswer);
+            
+            answerInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter' && !answerSubmitted && !solutionShown) {
+                    checkAnswer();
+                }
+            });
+            
+            newProblemBtn.addEventListener('click', newProblem);
+            showSolutionBtn.addEventListener('click', showSolution);
+            
+            simplifyBtn.addEventListener('click', function() {
+                setProblemType('simplify');
+            });
+            
+            operationsBtn.addEventListener('click', function() {
+                setProblemType('operations');
+            });
+            
+            mixedBtn.addEventListener('click', function() {
+                setProblemType('mixed');
+            });
+            
+            orderBtn.addEventListener('click', function() {
+                setProblemType('order');
+            });
+            
+            // Generar el primer problema al cargar la página
+            generateProblem();
+            answerInput.focus();
+        });
+    </script>
+</body>
+</html>
