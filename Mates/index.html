@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matemàtiques - Vedruna Gràcia</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+            color: #333;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            color: white;
+        }
+        
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .subtitle {
+            font-size: 1.3rem;
+            opacity: 0.9;
+            margin-bottom: 20px;
+        }
+        
+        .back-button {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            margin-bottom: 30px;
+            transition: background 0.3s ease;
+        }
+        
+        .back-button:hover {
+            background: rgba(255,255,255,0.3);
+        }
+        
+        .exercise-categories {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+        
+        .category {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        .category h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #e74c3c;
+            font-size: 1.8rem;
+        }
+        
+        .exercise-list {
+            list-style: none;
+        }
+        
+        .exercise-item {
+            margin-bottom: 15px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            transition: transform 0.2s ease;
+        }
+        
+        .exercise-item:hover {
+            transform: translateX(10px);
+            background: #e9ecef;
+        }
+        
+        .exercise-link {
+            text-decoration: none;
+            color: #2c3e50;
+            font-weight: 500;
+            display: block;
+        }
+        
+        .exercise-desc {
+            font-size: 0.9rem;
+            color: #7f8c8d;
+            margin-top: 5px;
+        }
+        
+        .difficulty {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            margin-left: 10px;
+        }
+        
+        .easy { background: #d5f4e6; color: #27ae60; }
+        .medium { background: #fff8e1; color: #f39c12; }
+        .hard { background: #fadbd8; color: #e74c3c; }
+        
+        .quick-stats {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-top: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .stat-item {
+            padding: 15px;
+        }
+        
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #e74c3c;
+            display: block;
+        }
+        
+        .stat-label {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+        }
+        
+        footer {
+            text-align: center;
+            color: white;
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.3);
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .exercise-categories {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <a href="../index.html" class="back-button">← Tornar a l'inici</a>
+            <h1>Matemàtiques</h1>
+            <p class="subtitle">Exercicis i recursos per practicar matemàtiques</p>
+        </header>
+        
+        <div class="exercise-categories">
+            <!-- Números Enters -->
+            <div class="category">
+                <h2>📊 Números Enters</h2>
+                <ul class="exercise-list">
+                    <li class="exercise-item">
+                        <a href="enters/operacions-basiques.html" class="exercise-link">
+                            Operacions Bàsiques
+                            <span class="difficulty easy">Fàcil</span>
+                        </a>
+                        <div class="exercise-desc">Suma, resta, multiplicació i divisió amb enters</div>
+                    </li>
+                    <li class="exercise-item">
+                        <a href="enters/operacions-combinades.html" class="exercise-link">
+                            Operacions Combinades
+                            <span class="difficulty medium">Mitjà</span>
+                        </a>
+                        <div class="exercise-desc">Operacions amb parèntesis i múltiples operadors</div>
+                    </li>
+                    <li class="exercise-item">
+                        <a href="enters/problemes-enters.html" class="exercise-link">
+                            Problemes amb Enters
+                            <span class="difficulty hard">Difícil</span>
+                        </a>
+                        <div class="exercise-desc">Problemes del món real amb números enters</div>
+                    </li>
+                </ul>
+            </div>
+            
+            <!-- Fraccions -->
+            <div class="category">
+                <h2>➗ Fraccions</h2>
+                <ul class="exercise-list">
+                    <li class="exercise-item">
+                        <a href="fraccions/simplificar.html" class="exercise-link">
+                            Simplificar Fraccions
+                            <span class="difficulty easy">Fàcil</span>
+                        </a>
+                        <div class="exercise-desc">Reduir fraccions a la seva forma més simple</div>
+                    </li>
+                    <li class="exercise-item">
+                        <a href="fraccions/operacions.html" class="exercise-link">
+                            Operacions amb Fraccions
+                            <span class="difficulty medium">Mitjà</span>
+                        </a>
+                        <div class="exercise-desc">Suma, resta, multiplicació i divisió</div>
+                    </li>
+                    <li class="exercise-item">
+                        <a href="fraccions/nombres-mixtos.html" class="exercise-link">
+                            Nombres Mixtos
+                            <span class="difficulty medium">Mitjà</span>
+                        </a>
+                        <div class="exercise-desc">Conversió entre fraccions i nombres mixtos</div>
+                    </li>
+                    <li class="exercise-item">
+                        <a href="fraccions/ordenar.html" class="exercise-link">
+                            Ordenar Fraccions
+                            <span class="difficulty hard">Difícil</span>
+                        </a>
+                        <div class="exercise-desc">Comparar i ordenar fraccions de menor a major</div>
+                    </li>
+                </ul>
+            </div>
+            
+            <!-- Geometria -->
+            <div class="category">
+                <h2>📐 Geometria</h2>
+                <ul class="exercise-list">
+                    <li class="exercise-item">
+                        <a href="geometria/areas-perimetros.html" class="exercise-link">
+                            Àrees i Perímetres
+                            <span class="difficulty medium">Mitjà</span>
+                        </a>
+                        <div class="exercise-desc">Càlcul d'àrees i perímetres de figures planes</div>
+                    </li>
+                    <li class="exercise-item">
+                        <a href="geometria/volum.html" class="exercise-link">
+                            Volum de Cossos
+                            <span class="difficulty hard">Difícil</span>
+                        </a>
+                        <div class="exercise-desc">Càlcul del volum de prismes, piràmides i esferes</div>
+                    </li>
+                </ul>
+            </div>
+            
+            <!-- Àlgebra -->
+            <div class="category">
+                <h2>📈 Àlgebra</h2>
+                <ul class="exercise-list">
+                    <li class="exercise-item">
+                        <a href="algebra/expressions.html" class="exercise-link">
+                            Expressions Algebraiques
+                            <span class="difficulty easy">Fàcil</span>
+                        </a>
+                        <div class="exercise-desc">Simplificació d'expressions amb variables</div>
+                    </li>
+                    <li class="exercise-item">
+                        <a href="algebra/equacions.html" class="exercise-link">
+                            Equacions de Primer Grau
+                            <span class="difficulty medium">Mitjà</span>
+                        </a>
+                        <div class="exercise-desc">Resolució d'equacions lineals</div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="quick-stats">
+            <h3>Estatístiques Ràpides</h3>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <span class="stat-number">24</span>
+                    <span class="stat-label">Exercicis Disponibles</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">8</span>
+                    <span class="stat-label">Categories</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">3</span>
+                    <span class="stat-label">Nivells de Dificultat</span>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>&copy; 2025 Vedruna Gràcia - Departament de Matemàtiques</p>
+        </footer>
+    </div>
+</body>
+</html>
