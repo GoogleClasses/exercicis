@@ -1,11 +1,146 @@
 <!DOCTYPE html>
-<html>
+<html lang="ca">
 <head>
-  <title>GoogleClasses - Índex</title>
-  <meta name="keywords" content="Vedruna Gràcia, GoogleClasses, google classes, exercicis, mates">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Centre d'Aprenentatge - Vedruna Gràcia</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            color: white;
+        }
+        
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .subtitle {
+            font-size: 1.3rem;
+            opacity: 0.9;
+        }
+        
+        .subject-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+        
+        .subject-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            text-decoration: none;
+            color: inherit;
+        }
+        
+        .subject-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+        
+        .subject-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+        
+        .subject-card h2 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.8rem;
+        }
+        
+        .subject-card p {
+            color: #7f8c8d;
+            line-height: 1.6;
+        }
+        
+        .maths { border-top: 5px solid #e74c3c; }
+        .science { border-top: 5px solid #3498db; }
+        .language { border-top: 5px solid #2ecc71; }
+        .social { border-top: 5px solid #f39c12; }
+        
+        footer {
+            text-align: center;
+            color: white;
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.3);
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .subject-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 <body>
-<h1>index.html file not found</h1>
-<small>ERR_NOT_REQS</small>
+    <div class="container">
+        <header>
+            <h1>Centre d'Aprenentatge</h1>
+            <p class="subtitle">Vedruna Gràcia - Recursos Educatius</p>
+        </header>
+        
+        <div class="subject-grid">
+            <a href="mates/index.html" class="subject-card maths">
+                <div class="subject-icon">🧮</div>
+                <h2>Matemàtiques</h2>
+                <p>Exercicis i problemes de nombres enters, fraccions, operacions i més</p>
+            </a>
+            
+            <a href="#" class="subject-card science">
+                <div class="subject-icon">🔬</div>
+                <h2>Ciències</h2>
+                <p>Experiments i activitats de natura, biologia i física</p>
+            </a>
+            
+            <a href="#" class="subject-card language">
+                <div class="subject-icon">📚</div>
+                <h2>Llengua</h2>
+                <p>Gramàtica, ortografia i comprensió lectora</p>
+            </a>
+            
+            <a href="#" class="subject-card social">
+                <div class="subject-icon">🌍</div>
+                <h2>Socials</h2>
+                <p>Història, geografia i educació ciutadana</p>
+            </a>
+        </div>
+        
+        <footer>
+            <p>&copy; 2025 Vedruna Gràcia. Tots els drets reservats.</p>
+        </footer>
+    </div>
 </body>
 </html>
