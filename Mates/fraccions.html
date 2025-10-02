@@ -310,10 +310,10 @@
         </div>
         
         <div class="complexity-controls">
-            <button id="simplify-btn" class="complexity-btn active">Simplificar</button>
-            <button id="operations-btn" class="complexity-btn">Operacions</button>
-            <button id="mixed-btn" class="complexity-btn">Nombres Mixtos</button>
-            <button id="order-btn" class="complexity-btn">Ordenar</button>
+            <button id="simplify-btn" class="complexity-btn" data-tab="simplificar">Simplificar</button>
+            <button id="operations-btn" class="complexity-btn" data-tab="operaciones">Operacions</button>
+            <button id="mixed-btn" class="complexity-btn" data-tab="mixtos">Nombres Mixtos</button>
+            <button id="order-btn" class="complexity-btn" data-tab="ordenar">Ordenar</button>
         </div>
         
         <div class="problem-container">
@@ -380,6 +380,68 @@
             let totalCount = 0;
             let answerSubmitted = false;
             let solutionShown = false;
+            
+            // === SISTEMA DE HASHES PARA PESTAÑAS ===
+            function activateTab(tabName) {
+                // Actualizar botones activos
+                [simplifyBtn, operationsBtn, mixedBtn, orderBtn].forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                
+                // Activar el botón correspondiente
+                const targetButton = document.querySelector(`[data-tab="${tabName}"]`);
+                if (targetButton) {
+                    targetButton.classList.add('active');
+                }
+                
+                // Cambiar el tipo de problema
+                switch(tabName) {
+                    case 'simplificar':
+                        currentType = 'simplify';
+                        break;
+                    case 'operaciones':
+                        currentType = 'operations';
+                        break;
+                    case 'mixtos':
+                        currentType = 'mixed';
+                        break;
+                    case 'ordenar':
+                        currentType = 'order';
+                        break;
+                }
+                
+                // Actualizar el hash en la URL sin recargar
+                window.history.replaceState(null, null, `#${tabName}`);
+                
+                // Generar nuevo problema del tipo seleccionado
+                newProblem();
+            }
+            
+            // Configurar event listeners para los botones
+            const tabButtons = [simplifyBtn, operationsBtn, mixedBtn, orderBtn];
+            tabButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const tabName = this.getAttribute('data-tab');
+                    activateTab(tabName);
+                });
+            });
+            
+            // Verificar el hash al cargar la página
+            function checkInitialHash() {
+                const hash = window.location.hash.substring(1);
+                const validTabs = ['simplificar', 'operaciones', 'mixtos', 'ordenar'];
+                
+                if (hash && validTabs.includes(hash)) {
+                    activateTab(hash);
+                } else {
+                    // Pestaña por defecto si no hay hash válido
+                    activateTab('simplificar');
+                }
+            }
+            
+            // También verificar hash cuando cambia la URL
+            window.addEventListener('hashchange', checkInitialHash);
+            // === FIN SISTEMA DE HASHES ===
             
             // Función para calcular el MCD
             function gcd(a, b) {
@@ -708,33 +770,6 @@
                 answerInput.focus();
             }
             
-            // Cambiar tipo de problema
-            function setProblemType(type) {
-                currentType = type;
-                
-                // Actualizar botones activos
-                [simplifyBtn, operationsBtn, mixedBtn, orderBtn].forEach(btn => {
-                    btn.classList.remove('active');
-                });
-                
-                switch(type) {
-                    case 'simplify':
-                        simplifyBtn.classList.add('active');
-                        break;
-                    case 'operations':
-                        operationsBtn.classList.add('active');
-                        break;
-                    case 'mixed':
-                        mixedBtn.classList.add('active');
-                        break;
-                    case 'order':
-                        orderBtn.classList.add('active');
-                        break;
-                }
-                
-                newProblem();
-            }
-            
             // Event listeners
             checkBtn.addEventListener('click', checkAnswer);
             
@@ -747,24 +782,8 @@
             newProblemBtn.addEventListener('click', newProblem);
             showSolutionBtn.addEventListener('click', showSolution);
             
-            simplifyBtn.addEventListener('click', function() {
-                setProblemType('simplify');
-            });
-            
-            operationsBtn.addEventListener('click', function() {
-                setProblemType('operations');
-            });
-            
-            mixedBtn.addEventListener('click', function() {
-                setProblemType('mixed');
-            });
-            
-            orderBtn.addEventListener('click', function() {
-                setProblemType('order');
-            });
-            
-            // Generar el primer problema al cargar la página
-            generateProblem();
+            // Ejecutar al cargar la página
+            checkInitialHash();
             answerInput.focus();
         });
     </script>
