@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content="Mates, Conversions, Unitats, Vedruna Gràcia">
+    <title>FIQ - Factors de Conversió</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            color: #333;
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            margin-top: 20px;
+        }
+        
+        h1 {
+            text-align: center;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            margin-bottom: 10px;
+            font-size: 2.5rem;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+            font-size: 1.2rem;
+        }
+        
+        .instructions {
+            background-color: #e8f4fc;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            border-left: 5px solid #3498db;
+        }
+        
+        .instructions h2 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        
+        .problem-container {
+            background-color: #f9f9f9;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e0e0e0;
+        }
+        
+        .problem {
+            font-size: 1.4rem;
+            text-align: center;
+            margin-bottom: 25px;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            min-height: 100px;
+            line-height: 1.8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+        
+        .unit-display {
+            font-size: 1.6rem;
+            font-weight: bold;
+            color: #e74c3c;
+            margin: 10px 0;
+        }
+        
+        .question {
+            font-weight: bold;
+            margin-top: 15px;
+            color: #2c3e50;
+            font-size: 1.3rem;
+        }
+        
+        .input-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        input[type="number"] {
+            padding: 12px 15px;
+            font-size: 1.2rem;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            width: 200px;
+            transition: border-color 0.3s;
+        }
+        
+        input[type="number"]:focus {
+            border-color: #3498db;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.3);
+        }
+        
+        input[type="number"]:disabled {
+            background-color: #f5f5f5;
+            color: #999;
+            cursor: not-allowed;
+        }
+        
+        button {
+            padding: 12px 25px;
+            background: linear-gradient(to right, #3498db, #2980b9);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: bold;
+            transition: all 0.3s;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        button:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+        }
+        
+        button:active:not(:disabled) {
+            transform: translateY(0);
+        }
+        
+        button:disabled {
+            background: linear-gradient(to right, #95a5a6, #7f8c8d);
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+        
+        .check-btn {
+            background: linear-gradient(to right, #2ecc71, #27ae60);
+        }
+        
+        .new-exercise-btn {
+            background: linear-gradient(to right, #e74c3c, #c0392b);
+        }
+        
+        .result {
+            margin-top: 20px;
+            font-weight: bold;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 1.2rem;
+            transition: all 0.3s;
+        }
+        
+        .correct {
+            color: #27ae60;
+            background-color: #d5f4e6;
+            border: 2px solid #27ae60;
+        }
+        
+        .incorrect {
+            color: #e74c3c;
+            background-color: #fadbd8;
+            border: 2px solid #e74c3c;
+        }
+        
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .complexity-controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .complexity-btn {
+            padding: 10px 20px;
+            background: linear-gradient(to right, #9b59b6, #8e44ad);
+            font-size: 1rem;
+        }
+        
+        .complexity-btn.active {
+            background: linear-gradient(to right, #e67e22, #d35400);
+            box-shadow: 0 0 0 3px rgba(230, 126, 34, 0.5);
+        }
+        
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 30px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            font-weight: bold;
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 1.5rem;
+            color: #3498db;
+        }
+        
+        .format-info {
+            background-color: #fff8e1;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+            font-size: 0.9rem;
+            border-left: 3px solid #ffc107;
+        }
+        
+        .conversion-table {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            font-size: 0.9rem;
+        }
+        
+        .conversion-table h3 {
+            text-align: center;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+        
+        footer {
+            margin-top: 30px;
+            text-align: center;
+            color: white;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                padding: 15px;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .problem {
+                font-size: 1.2rem;
+                padding: 15px;
+            }
+            
+            .input-container {
+                flex-direction: column;
+            }
+            
+            input[type="number"] {
+                width: 100%;
+            }
+            
+            .controls {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>MATES</h1>
+    <p class="subtitle">Factors de Conversió d'Unitats</p>
+    
+    <div class="container">
+        <div class="instructions">
+            <h2>Instruccions:</h2>
+            <p>Converteix les unitats següents utilitzant els factors de conversió.</p>
+            <p>Escriu el resultat i verifica'l amb el botó "Verifica la resposta".</p>
+            <p>Recorda que cada pas en la taula d'unitats és un factor de 10.</p>
+            
+            <div class="conversion-table">
+                <h3>📏 Taula de Conversions (Sistema Mètric)</h3>
+                <p><strong>Longitud:</strong> km → hm → dam → m → dm → cm → mm</p>
+                <p><strong>Massa:</strong> kg → hg → dag → g → dg → cg → mg</p>
+                <p><strong>Capacitat:</strong> kl → hl → dal → l → dl → cl → ml</p>
+                <p><strong>Superfície:</strong> km² → hm² → dam² → m² → dm² → cm² → mm²</p>
+                <p><strong>Volum:</strong> km³ → hm³ → dam³ → m³ → dm³ → cm³ → mm³</p>
+            </div>
+            
+            <p>Un cop verificada la resposta o vista la solució, no es podrà enviar una altra resposta.</p>
+        </div>
+        
+        <div class="complexity-controls">
+            <button id="easy-complexity" class="complexity-btn active">Nivell Fàcil</button>
+            <button id="hard-complexity" class="complexity-btn">Nivell Difícil</button>
+        </div>
+        
+        <div class="problem-container">
+            <div class="problem" id="problem-text">L'exercici apareixerà aquí</div>
+            <div class="question" id="question-text">Pregunta:</div>
+            <div class="format-info" id="format-info">Format de resposta: número amb decimals si cal</div>
+            
+            <div class="input-container">
+                <input type="number" id="answer-input" placeholder="Introdueix la resposta" step="0.001">
+                <button id="check-btn" class="check-btn">Verificar resposta</button>
+            </div>
+            
+            <div class="result" id="result"></div>
+        </div>
+        
+        <div class="controls">
+            <button id="new-exercise-btn" class="new-exercise-btn">Nou exercici</button>
+            <button id="show-solution-btn">👀 Solució</button>
+        </div>
+        
+        <div class="stats">
+            <div class="stat-item">
+                <div class="stat-value" id="correct-count">0</div>
+                <div>Correctes</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="incorrect-count">0</div>
+                <div>Incorrectes</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="total-count">0</div>
+                <div>Total</div>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <p>Generador d'exercicis de Conversions. &copy;GoogleClasses 2025</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const problemText = document.getElementById('problem-text');
+            const questionText = document.getElementById('question-text');
+            const formatInfo = document.getElementById('format-info');
+            const answerInput = document.getElementById('answer-input');
+            const checkBtn = document.getElementById('check-btn');
+            const resultDiv = document.getElementById('result');
+            const newExerciseBtn = document.getElementById('new-exercise-btn');
+            const showSolutionBtn = document.getElementById('show-solution-btn');
+            const easyComplexityBtn = document.getElementById('easy-complexity');
+            const hardComplexityBtn = document.getElementById('hard-complexity');
+            const correctCountElem = document.getElementById('correct-count');
+            const incorrectCountElem = document.getElementById('incorrect-count');
+            const totalCountElem = document.getElementById('total-count');
+            
+            let currentExercise = null;
+            let correctAnswer = null;
+            let currentComplexity = 'easy';
+            let correctCount = 0;
+            let incorrectCount = 0;
+            let totalCount = 0;
+            let answerSubmitted = false;
+            let solutionShown = false;
+            
+            // Tablas de conversión
+            const lengthUnits = ['km', 'hm', 'dam', 'm', 'dm', 'cm', 'mm'];
+            const massUnits = ['kg', 'hg', 'dag', 'g', 'dg', 'cg', 'mg'];
+            const capacityUnits = ['kl', 'hl', 'dal', 'l', 'dl', 'cl', 'ml'];
+            const volumeUnits = ['km³', 'hm³', 'dam³', 'm³', 'dm³', 'cm³', 'mm³'];
+            
+            // Generar un número aleatorio entre min y max
+            function getRandomInt(min, max) {
+                return Math.floor(Math.random() * (max - min + 1)) + min;
+            }
+            
+            // Generar un número decimal aleatorio
+            function getRandomDecimal(min, max, decimals = 2) {
+                const factor = Math.pow(10, decimals);
+                return Math.round((Math.random() * (max - min) + min) * factor) / factor;
+            }
+            
+            // Generar un ejercicio de nivel fácil (solo longitud)
+            function generateEasyExercise() {
+                const exerciseType = getRandomInt(0, 2);
+                let value, fromUnit, toUnit, steps, problem, answer;
+                
+                // Valor entre 0.1 y 1000
+                value = getRandomDecimal(0.1, 1000, 2);
+                
+                // Seleccionar unidades de longitud
+                const fromIndex = getRandomInt(0, lengthUnits.length - 1);
+                let toIndex;
+                
+                do {
+                    toIndex = getRandomInt(0, lengthUnits.length - 1);
+                } while (fromIndex === toIndex);
+                
+                fromUnit = lengthUnits[fromIndex];
+                toUnit = lengthUnits[toIndex];
+                steps = toIndex - fromIndex;
+                
+                // Calcular respuesta
+                answer = value * Math.pow(10, steps);
+                
+                // Formatear problema
+                problem = `Converteix <span class="unit-display">${value} ${fromUnit}</span> a ${toUnit}`;
+                questionText.textContent = `Quant són ${value} ${fromUnit} en ${toUnit}?`;
+                formatInfo.textContent = "Format de resposta: número amb decimals si cal";
+                
+                return { problem, answer: parseFloat(answer.toFixed(6)) };
+            }
+            
+            // Generar un ejercicio de nivel difícil (múltiples sistemas)
+            function generateHardExercise() {
+                const systemType = getRandomInt(0, 4); // 0: longitud, 1: masa, 2: capacidad, 3: volumen, 4: mixto
+                let value, fromUnit, toUnit, steps, problem, answer, units;
+                
+                value = getRandomDecimal(0.001, 1000, 3);
+                
+                switch(systemType) {
+                    case 0: // Longitud
+                        units = lengthUnits;
+                        break;
+                    case 1: // Masa
+                        units = massUnits;
+                        break;
+                    case 2: // Capacidad
+                        units = capacityUnits;
+                        break;
+                    case 3: // Volumen
+                        units = volumeUnits;
+                        break;
+                    case 4: // Mixto (conversiones entre sistemas)
+                        return generateMixedConversion();
+                }
+                
+                const fromIndex = getRandomInt(0, units.length - 1);
+                let toIndex;
+                
+                do {
+                    toIndex = getRandomInt(0, units.length - 1);
+                } while (fromIndex === toIndex);
+                
+                fromUnit = units[fromIndex];
+                toUnit = units[toIndex];
+                steps = toIndex - fromIndex;
+                
+                // Para volumen, usar potencias de 1000 en lugar de 10
+                const base = (systemType === 3) ? 1000 : 10;
+                answer = value * Math.pow(base, steps);
+                
+                problem = `Converteix <span class="unit-display">${value} ${fromUnit}</span> a ${toUnit}`;
+                questionText.textContent = `Quant són ${value} ${fromUnit} en ${toUnit}?`;
+                formatInfo.textContent = "Format de resposta: número amb decimals si cal";
+                
+                return { problem, answer: parseFloat(answer.toFixed(6)) };
+            }
+            
+            // Generar conversión mixta (entre diferentes sistemas)
+            function generateMixedConversion() {
+                const conversionTypes = [
+                    { from: 'm³', to: 'l', factor: 1000, name: 'metres cúbics a litres' },
+                    { from: 'dm³', to: 'l', factor: 1, name: 'decímetres cúbics a litres' },
+                    { from: 'cm³', to: 'ml', factor: 1, name: 'centímetres cúbics a mil·lilitres' },
+                    { from: 'hl', to: 'm³', factor: 0.1, name: 'hectolitres a metres cúbics' },
+                    { from: 'kg', to: 'g', factor: 1000, name: 'quilograms a grams' },
+                    { from: 'mg', to: 'g', factor: 0.001, name: 'mil·ligrams a grams' }
+                ];
+                
+                const conversion = conversionTypes[getRandomInt(0, conversionTypes.length - 1)];
+                const value = getRandomDecimal(0.1, 500, 2);
+                const answer = value * conversion.factor;
+                
+                const problem = `Converteix <span class="unit-display">${value} ${conversion.from}</span> a ${conversion.to}`;
+                questionText.textContent = `Quant són ${value} ${conversion.from} en ${conversion.to}?`;
+                formatInfo.textContent = "Format de resposta: número amb decimals si cal";
+                
+                return { problem, answer: parseFloat(answer.toFixed(6)) };
+            }
+            
+            // Generar un ejercicio aleatorio
+            function generateExercise() {
+                let exerciseData;
+                
+                if (currentComplexity === 'easy') {
+                    exerciseData = generateEasyExercise();
+                } else {
+                    exerciseData = generateHardExercise();
+                }
+                
+                problemText.innerHTML = exerciseData.problem;
+                correctAnswer = exerciseData.answer;
+                currentExercise = exerciseData.problem;
+                
+                // Restablecer el estado de envío
+                answerSubmitted = false;
+                solutionShown = false;
+                enableAnswerSubmission();
+            }
+            
+            // Habilitar el envío de respuestas
+            function enableAnswerSubmission() {
+                answerInput.disabled = false;
+                checkBtn.disabled = false;
+                answerInput.placeholder = "Introdueix la resposta";
+                answerInput.value = "";
+                resultDiv.textContent = "";
+                resultDiv.className = "result";
+            }
+            
+            // Deshabilitar el envío de respuestas
+            function disableAnswerSubmission() {
+                answerInput.disabled = true;
+                checkBtn.disabled = true;
+                answerInput.placeholder = "Resposta ja enviada";
+            }
+            
+            // Verificar la respuesta (con margen de error para decimales)
+            function checkAnswer() {
+                if (answerSubmitted || solutionShown) {
+                    return;
+                }
+                
+                const userAnswer = parseFloat(answerInput.value);
+                
+                if (isNaN(userAnswer)) {
+                    resultDiv.textContent = "Per favor, introdueix un número vàlid";
+                    resultDiv.className = "result incorrect";
+                    return;
+                }
+                
+                totalCount++;
+                totalCountElem.textContent = totalCount;
+                
+                // Comparar con margen de error pequeño para números decimales
+                if (Math.abs(userAnswer - correctAnswer) < 0.001) {
+                    resultDiv.textContent = "¡Correcte!";
+                    resultDiv.className = "result correct";
+                    correctCount++;
+                    correctCountElem.textContent = correctCount;
+                } else {
+                    resultDiv.textContent = `Incorrecte. La resposta correcta és ${correctAnswer}.`;
+                    resultDiv.className = "result incorrect";
+                    incorrectCount++;
+                    incorrectCountElem.textContent = incorrectCount;
+                }
+                
+                answerSubmitted = true;
+                disableAnswerSubmission();
+            }
+            
+            // Mostrar la solución
+            function showSolution() {
+                if (solutionShown) {
+                    return;
+                }
+                
+                resultDiv.textContent = `Solució: ${correctAnswer}`;
+                resultDiv.className = "result";
+                
+                solutionShown = true;
+                disableAnswerSubmission();
+                
+                if (!answerSubmitted) {
+                    totalCount++;
+                    totalCountElem.textContent = totalCount;
+                    incorrectCount++;
+                    incorrectCountElem.textContent = incorrectCount;
+                    answerSubmitted = true;
+                }
+            }
+            
+            // Limpiar y generar nuevo ejercicio
+            function newExercise() {
+                generateExercise();
+                answerInput.focus();
+            }
+            
+            // Cambiar complejidad
+            function setComplexity(complexity) {
+                currentComplexity = complexity;
+                
+                if (complexity === 'easy') {
+                    easyComplexityBtn.classList.add('active');
+                    hardComplexityBtn.classList.remove('active');
+                } else {
+                    easyComplexityBtn.classList.remove('active');
+                    hardComplexityBtn.classList.add('active');
+                }
+                
+                newExercise();
+            }
+            
+            // Event listeners
+            checkBtn.addEventListener('click', checkAnswer);
+            
+            answerInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter' && !answerSubmitted && !solutionShown) {
+                    checkAnswer();
+                }
+            });
+            
+            newExerciseBtn.addEventListener('click', newExercise);
+            showSolutionBtn.addEventListener('click', showSolution);
+            
+            easyComplexityBtn.addEventListener('click', function() {
+                setComplexity('easy');
+            });
+            
+            hardComplexityBtn.addEventListener('click', function() {
+                setComplexity('hard');
+            });
+            
+            // Generar el primer ejercicio al cargar la página
+            generateExercise();
+            answerInput.focus();
+        });
+    </script>
+</body>
+</html>
