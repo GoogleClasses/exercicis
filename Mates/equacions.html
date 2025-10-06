@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content="Mates, Equacions, Vedruna Gràcia">
+    <title>Mates - Generador d'Equacions</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            color: #333;
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .container {
+            max-width: 600px;
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            margin-top: 20px;
+        }
+        
+        h1 {
+            text-align: center;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            margin-bottom: 10px;
+            font-size: 2.5rem;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+            font-size: 1.2rem;
+        }
+        
+        .instructions {
+            background-color: #e8f4fc;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            border-left: 5px solid #3498db;
+        }
+        
+        .instructions h2 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        
+        .problem-container {
+            background-color: #f9f9f9;
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e0e0e0;
+            text-align: center;
+        }
+        
+        .problem {
+            font-size: 2rem;
+            margin-bottom: 30px;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+        }
+        
+        .answer-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+        }
+        
+        input[type="number"] {
+            padding: 12px 15px;
+            font-size: 1.3rem;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            width: 120px;
+            text-align: center;
+            transition: border-color 0.3s;
+        }
+        
+        input[type="number"]:focus {
+            border-color: #3498db;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.3);
+        }
+        
+        input[type="number"]:disabled {
+            background-color: #f5f5f5;
+            color: #999;
+            cursor: not-allowed;
+        }
+        
+        button {
+            padding: 12px 25px;
+            background: linear-gradient(to right, #3498db, #2980b9);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: bold;
+            transition: all 0.3s;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        button:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+        }
+        
+        button:active:not(:disabled) {
+            transform: translateY(0);
+        }
+        
+        button:disabled {
+            background: linear-gradient(to right, #95a5a6, #7f8c8d);
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+        
+        .check-btn {
+            background: linear-gradient(to right, #2ecc71, #27ae60);
+        }
+        
+        .new-exercise-btn {
+            background: linear-gradient(to right, #e74c3c, #c0392b);
+        }
+        
+        .exam-btn {
+            background: linear-gradient(to right, #9b59b6, #8e44ad);
+        }
+        
+        .continue-btn {
+            background: linear-gradient(to right, #f39c12, #e67e22);
+        }
+        
+        .result {
+            margin-top: 20px;
+            font-weight: bold;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 1.2rem;
+            transition: all 0.3s;
+        }
+        
+        .correct {
+            color: #27ae60;
+            background-color: #d5f4e6;
+            border: 2px solid #27ae60;
+        }
+        
+        .incorrect {
+            color: #e74c3c;
+            background-color: #fadbd8;
+            border: 2px solid #e74c3c;
+        }
+        
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .complexity-controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .complexity-btn {
+            padding: 10px 20px;
+            background: linear-gradient(to right, #9b59b6, #8e44ad);
+            font-size: 1rem;
+        }
+        
+        .complexity-btn.active {
+            background: linear-gradient(to right, #e67e22, #d35400);
+            box-shadow: 0 0 0 3px rgba(230, 126, 34, 0.5);
+        }
+        
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 30px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            font-weight: bold;
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 1.5rem;
+            color: #3498db;
+        }
+        
+        .exam-info {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: bold;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background-color: #e9ecef;
+            border-radius: 10px;
+            margin: 10px 0;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #2ecc71, #27ae60);
+            transition: width 0.3s ease;
+        }
+        
+        .exam-results {
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 25px;
+            margin-top: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .result-item {
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .result-correct {
+            background-color: #d5f4e6;
+            color: #27ae60;
+        }
+        
+        .result-incorrect {
+            background-color: #fadbd8;
+            color: #e74c3c;
+        }
+        
+        footer {
+            margin-top: 30px;
+            text-align: center;
+            color: white;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                padding: 15px;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .problem {
+                font-size: 1.5rem;
+                padding: 15px;
+            }
+            
+            .controls {
+                flex-direction: column;
+            }
+            
+            .complexity-controls {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>MATES</h1>
+    <p class="subtitle">Generador d'Equacions</p>
+    
+    <div class="container">
+        <div class="instructions">
+            <h2>Instruccions:</h2>
+            <p>Resol les equacions i escriu només el número a la caixa.</p>
+            <p>Exemple: Per "x = 5", escriu <strong>5</strong> a la caixa</p>
+        </div>
+        
+        <div class="complexity-controls">
+            <button id="easy-complexity" class="complexity-btn">Fàcil</button>
+            <button id="medium-complexity" class="complexity-btn">Mitjà</button>
+            <button id="hard-complexity" class="complexity-btn">Difícil</button>
+            <button id="exam-mode" class="complexity-btn exam-btn">Mode Examen</button>
+        </div>
+        
+        <div id="exam-info" class="exam-info" style="display: none;">
+            <div id="timer">⏱️ 15:00</div>
+            <div id="progress-text">Progrés: 1/9</div>
+            <div class="progress-bar">
+                <div id="progress-fill" class="progress-fill" style="width: 11%;"></div>
+            </div>
+            <div id="difficulty-indicator">Dificultat: FÀCIL</div>
+        </div>
+        
+        <div class="problem-container">
+            <div class="problem" id="problem-text">2x + 5 = 15</div>
+            
+            <div class="answer-container">
+                <span>x =</span>
+                <input type="number" id="answer-input" placeholder="0">
+            </div>
+            
+            <div class="result" id="result"></div>
+            
+            <div class="controls">
+                <button id="check-btn" class="check-btn">Verificar resposta</button>
+                <button id="next-exam-btn" class="continue-btn" style="display: none;">Continuar →</button>
+            </div>
+        </div>
+        
+        <div class="controls">
+            <button id="new-exercise-btn" class="new-exercise-btn">Nou exercici</button>
+            <button id="show-solution-btn">👀 Solució</button>
+        </div>
+        
+        <div id="exam-results" class="exam-results" style="display: none;">
+            <h3 style="text-align: center; margin-bottom: 20px;">📊 Resultats de l'Examen</h3>
+            <div id="results-list"></div>
+            <div style="text-align: center; margin-top: 20px;">
+                <button id="retry-exam" class="exam-btn">Repetir Examen</button>
+                <button id="back-to-normal" class="new-exercise-btn">Tornar al Mode Normal</button>
+            </div>
+        </div>
+        
+        <div class="stats">
+            <div class="stat-item">
+                <div class="stat-value" id="correct-count">0</div>
+                <div>Correctes</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="incorrect-count">0</div>
+                <div>Incorrectes</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="total-count">0</div>
+                <div>Total</div>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <p>Generador d'Equacions. &copy;GoogleClasses 2025</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Elementos DOM
+            const problemText = document.getElementById('problem-text');
+            const answerInput = document.getElementById('answer-input');
+            const checkBtn = document.getElementById('check-btn');
+            const nextExamBtn = document.getElementById('next-exam-btn');
+            const resultDiv = document.getElementById('result');
+            const newExerciseBtn = document.getElementById('new-exercise-btn');
+            const showSolutionBtn = document.getElementById('show-solution-btn');
+            const easyBtn = document.getElementById('easy-complexity');
+            const mediumBtn = document.getElementById('medium-complexity');
+            const hardBtn = document.getElementById('hard-complexity');
+            const examBtn = document.getElementById('exam-mode');
+            const correctCountElem = document.getElementById('correct-count');
+            const incorrectCountElem = document.getElementById('incorrect-count');
+            const totalCountElem = document.getElementById('total-count');
+            const examInfo = document.getElementById('exam-info');
+            const timerElem = document.getElementById('timer');
+            const progressText = document.getElementById('progress-text');
+            const progressFill = document.getElementById('progress-fill');
+            const difficultyIndicator = document.getElementById('difficulty-indicator');
+            const examResults = document.getElementById('exam-results');
+            const resultsList = document.getElementById('results-list');
+            const retryExamBtn = document.getElementById('retry-exam');
+            const backToNormalBtn = document.getElementById('back-to-normal');
+
+            // Variables de estado
+            let currentExercise = null;
+            let correctAnswer = null;
+            let currentComplexity = 'easy';
+            let correctCount = 0;
+            let incorrectCount = 0;
+            let totalCount = 0;
+            let answerSubmitted = false;
+            let solutionShown = false;
+            let isExamMode = false;
+            let examExercises = [];
+            let currentExamIndex = 0;
+            let examScore = 0;
+            let examTimeLeft = 15 * 60;
+            let examTimer = null;
+            let examResultsData = [];
+
+            // Generar ecuaciones (números hasta 50)
+            function generateEasyEquation() {
+                const a = getRandomInt(2, 8);
+                const x = getRandomInt(1, 8);
+                const b = getRandomInt(1, 15);
+                
+                const types = [
+                    () => `${a}x + ${b} = ${a * x + b}`,
+                    () => `${a}x - ${b} = ${a * x - b}`,
+                    () => `x/${a} = ${x}`,
+                    () => `${a}x = ${a * x}`
+                ];
+                
+                const equation = types[Math.floor(Math.random() * types.length)]();
+                return { equation, solution: x };
+            }
+
+            function generateMediumEquation() {
+                const a = getRandomInt(2, 6);
+                const c = getRandomInt(1, 5);
+                const x = getRandomInt(2, 8);
+                const b = getRandomInt(1, 10);
+                const d = getRandomInt(1, 10);
+                
+                const types = [
+                    () => `${a}x + ${b} = ${c}x + ${(a - c) * x + b}`,
+                    () => `x/${a} + ${b} = ${Math.floor(x/a) + b}`,
+                    () => {
+                        if (Math.random() < 0.05) {
+                            return `${a}(x + ${b}) = ${a * (x + b)}`;
+                        }
+                        return `${a}x - ${b} = ${c}x + ${(a - c) * x - b}`;
+                    }
+                ];
+                
+                const equation = types[Math.floor(Math.random() * types.length)]();
+                return { equation, solution: x };
+            }
+
+            function generateHardEquation() {
+                const types = [
+                    () => {
+                        if (Math.random() < 0.2) {
+                            const a = getRandomInt(2, 4);
+                            const b = getRandomInt(1, 5);
+                            const x = getRandomInt(3, 8);
+                            return `${a}(x - ${b}) = ${a * (x - b)}`;
+                        }
+                        if (Math.random() < 0.1) {
+                            const a = getRandomInt(1, 3);
+                            const x = getRandomInt(2, 7);
+                            return `${a}x² = ${a * x * x}`;
+                        }
+                        const a = getRandomInt(2, 5);
+                        const c = getRandomInt(2, 5);
+                        const x = getRandomInt(2, 8);
+                        const b = getRandomInt(1, 6);
+                        return `${a}x + ${b} = ${c}x - ${(c - a) * x - b}`;
+                    },
+                    () => {
+                        const a = getRandomInt(2, 4);
+                        const b = getRandomInt(1, 5);
+                        const x = getRandomInt(4, 12);
+                        return `(x + ${b})/${a} = ${Math.floor((x + b)/a)}`;
+                    },
+                    () => {
+                        const a = getRandomInt(2, 3);
+                        const c = getRandomInt(2, 3);
+                        const x = getRandomInt(3, 10);
+                        const b = getRandomInt(1, 4);
+                        return `${a}x/${c} + ${b} = ${Math.floor(a*x/c) + b}`;
+                    }
+                ];
+                
+                const generator = types[Math.floor(Math.random() * types.length)];
+                const { equation, solution } = generator();
+                return { equation, solution };
+            }
+
+            function getRandomInt(min, max) {
+                return Math.floor(Math.random() * (max - min + 1)) + min;
+            }
+
+            function generateExercise() {
+                let exercise;
+                switch(currentComplexity) {
+                    case 'easy':
+                        exercise = generateEasyEquation();
+                        break;
+                    case 'medium':
+                        exercise = generateMediumEquation();
+                        break;
+                    case 'hard':
+                        exercise = generateHardEquation();
+                        break;
+                }
+                
+                problemText.textContent = exercise.equation;
+                correctAnswer = exercise.solution;
+                currentExercise = exercise.equation;
+                
+                answerSubmitted = false;
+                solutionShown = false;
+                enableAnswerSubmission();
+            }
+
+            function startExam() {
+                console.log("🟢 Iniciando modo examen...");
+                isExamMode = true;
+                examExercises = [];
+                currentExamIndex = 0;
+                examScore = 0;
+                examTimeLeft = 15 * 60;
+                examResultsData = [];
+                
+                // Generar 3 de cada dificultad
+                for (let i = 0; i < 3; i++) {
+                    examExercises.push({ ...generateEasyEquation(), difficulty: 'easy' });
+                    examExercises.push({ ...generateMediumEquation(), difficulty: 'medium' });
+                    examExercises.push({ ...generateHardEquation(), difficulty: 'hard' });
+                }
+                
+                // Mezclar ejercicios
+                examExercises = examExercises.sort(() => Math.random() - 0.5);
+                
+                // Mostrar interfaz de examen
+                examInfo.style.display = 'block';
+                nextExamBtn.style.display = 'inline-block';
+                checkBtn.style.display = 'inline-block';
+                newExerciseBtn.disabled = true;
+                showSolutionBtn.disabled = true;
+                easyBtn.disabled = true;
+                mediumBtn.disabled = true;
+                hardBtn.disabled = true;
+                examBtn.disabled = true;
+                
+                startExamTimer();
+                showExamExercise();
+            }
+
+            function showExamExercise() {
+                console.log("📝 Mostrando ejercicio del examen:", currentExamIndex + 1);
+                
+                if (currentExamIndex >= examExercises.length) {
+                    endExam();
+                    return;
+                }
+                
+                const exercise = examExercises[currentExamIndex];
+                problemText.textContent = exercise.equation;
+                correctAnswer = exercise.solution;
+                currentExercise = exercise.equation;
+                
+                progressText.textContent = `Progrés: ${currentExamIndex + 1}/9`;
+                progressFill.style.width = `${((currentExamIndex + 1) / 9) * 100}%`;
+                difficultyIndicator.textContent = `Dificultat: ${exercise.difficulty.toUpperCase()}`;
+                
+                answerInput.value = '';
+                resultDiv.textContent = '';
+                resultDiv.className = 'result';
+                
+                answerSubmitted = false;
+                solutionShown = false;
+                
+                // Configurar botones para modo examen
+                checkBtn.style.display = 'inline-block';
+                nextExamBtn.style.display = 'none'; // Ocultar Continuar inicialmente
+                nextExamBtn.disabled = false;
+                
+                enableAnswerSubmission();
+                answerInput.focus();
+            }
+
+            function startExamTimer() {
+                clearInterval(examTimer);
+                examTimer = setInterval(() => {
+                    examTimeLeft--;
+                    updateTimerDisplay();
+                    
+                    if (examTimeLeft <= 0) {
+                        endExam();
+                    }
+                }, 1000);
+                updateTimerDisplay();
+            }
+
+            function updateTimerDisplay() {
+                const minutes = Math.floor(examTimeLeft / 60);
+                const seconds = examTimeLeft % 60;
+                timerElem.textContent = `⏱️ ${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            }
+
+            function endExam() {
+                console.log("🏁 Terminando examen");
+                clearInterval(examTimer);
+                isExamMode = false;
+                showExamResults(examScore, examExercises.length);
+            }
+
+            function showExamResults(correct, total) {
+                examInfo.style.display = 'none';
+                examResults.style.display = 'block';
+                nextExamBtn.style.display = 'none';
+                checkBtn.style.display = 'inline-block';
+                
+                let resultsHTML = `
+                    <div style="text-align: center; margin-bottom: 20px;">
+                        <div style="font-size: 2rem; margin-bottom: 10px;">${correct}/${total}</div>
+                        <div style="font-size: 1.2rem; color: ${correct >= 5 ? '#27ae60' : '#e74c3c'};">
+                            ${correct >= 5 ? '✅ Aprovat' : '❌ Susprès'}
+                        </div>
+                    </div>
+                `;
+                
+                examExercises.forEach((exercise, index) => {
+                    const result = examResultsData[index];
+                    const isCorrect = result && result.correct;
+                    resultsHTML += `
+                        <div class="result-item ${isCorrect ? 'result-correct' : 'result-incorrect'}">
+                            <div style="flex: 1;">${exercise.equation}</div>
+                            <div style="margin-left: 10px;">${isCorrect ? '✅' : '❌'} x = ${result ? result.answer : '?'}</div>
+                        </div>
+                    `;
+                });
+                
+                resultsList.innerHTML = resultsHTML;
+            }
+
+            function enableAnswerSubmission() {
+                answerInput.disabled = false;
+                checkBtn.disabled = false;
+                answerInput.focus();
+            }
+
+            function disableAnswerSubmission() {
+                answerInput.disabled = true;
+                checkBtn.disabled = true;
+            }
+
+            function checkAnswer() {
+                if (answerSubmitted || solutionShown) return;
+
+                const userAnswer = parseFloat(answerInput.value);
+                
+                if (isNaN(userAnswer)) {
+                    resultDiv.textContent = "Introdueix un número vàlid";
+                    resultDiv.className = "result incorrect";
+                    return;
+                }
+
+                totalCount++;
+                totalCountElem.textContent = totalCount;
+
+                if (Math.abs(userAnswer - correctAnswer) < 0.001) {
+                    resultDiv.textContent = "¡Correcte!";
+                    resultDiv.className = "result correct";
+                    correctCount++;
+                    correctCountElem.textContent = correctCount;
+                    
+                    if (isExamMode) {
+                        examScore++;
+                        examResultsData[currentExamIndex] = { correct: true, answer: userAnswer };
+                    }
+                } else {
+                    resultDiv.textContent = `Incorrecte. La resposta correcta és x = ${correctAnswer}.`;
+                    resultDiv.className = "result incorrect";
+                    incorrectCount++;
+                    incorrectCountElem.textContent = incorrectCount;
+                    
+                    if (isExamMode) {
+                        examResultsData[currentExamIndex] = { correct: false, answer: userAnswer };
+                    }
+                }
+
+                answerSubmitted = true;
+                
+                // EN MODO EXAMEN: Mostrar y activar el botón Continuar
+                if (isExamMode) {
+                    console.log("✅ Activando botón Continuar para el examen");
+                    checkBtn.style.display = 'none';
+                    nextExamBtn.style.display = 'inline-block';
+                    nextExamBtn.disabled = false;
+                    disableAnswerSubmission();
+                } else {
+                    disableAnswerSubmission();
+                }
+            }
+
+            function showSolution() {
+                if (solutionShown || isExamMode) return;
+
+                resultDiv.textContent = `Solució: x = ${correctAnswer}`;
+                resultDiv.className = "result";
+                solutionShown = true;
+                disableAnswerSubmission();
+
+                if (!answerSubmitted) {
+                    totalCount++;
+                    totalCountElem.textContent = totalCount;
+                    incorrectCount++;
+                    incorrectCountElem.textContent = incorrectCount;
+                    answerSubmitted = true;
+                }
+            }
+
+            // Event Listeners
+            checkBtn.addEventListener('click', checkAnswer);
+            
+            nextExamBtn.addEventListener('click', function() {
+                console.log("➡️ Botón Continuar clickeado, avanzando al siguiente ejercicio");
+                if (answerSubmitted) {
+                    currentExamIndex++;
+                    showExamExercise();
+                }
+            });
+
+            answerInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter' && !answerSubmitted && !solutionShown) {
+                    checkAnswer();
+                }
+            });
+
+            newExerciseBtn.addEventListener('click', function() {
+                if (!isExamMode) {
+                    generateExercise();
+                    answerInput.focus();
+                }
+            });
+
+            showSolutionBtn.addEventListener('click', showSolution);
+
+            function setComplexity(complexity) {
+                if (isExamMode) return;
+                
+                currentComplexity = complexity;
+                [easyBtn, mediumBtn, hardBtn, examBtn].forEach(btn => btn.classList.remove('active'));
+                
+                switch(complexity) {
+                    case 'easy':
+                        easyBtn.classList.add('active');
+                        break;
+                    case 'medium':
+                        mediumBtn.classList.add('active');
+                        break;
+                    case 'hard':
+                        hardBtn.classList.add('active');
+                        break;
+                    case 'exam':
+                        examBtn.classList.add('active');
+                        startExam();
+                        return;
+                }
+                
+                generateExercise();
+            }
+
+            easyBtn.addEventListener('click', () => setComplexity('easy'));
+            mediumBtn.addEventListener('click', () => setComplexity('medium'));
+            hardBtn.addEventListener('click', () => setComplexity('hard'));
+            examBtn.addEventListener('click', () => setComplexity('exam'));
+
+            retryExamBtn.addEventListener('click', function() {
+                examResults.style.display = 'none';
+                setComplexity('exam');
+            });
+
+            backToNormalBtn.addEventListener('click', function() {
+                examResults.style.display = 'none';
+                newExerciseBtn.disabled = false;
+                showSolutionBtn.disabled = false;
+                easyBtn.disabled = false;
+                mediumBtn.disabled = false;
+                hardBtn.disabled = false;
+                examBtn.disabled = false;
+                nextExamBtn.style.display = 'none';
+                checkBtn.style.display = 'inline-block';
+                setComplexity('easy');
+            });
+
+            // Inicializar
+            setComplexity('easy');
+            answerInput.focus();
+        });
+    </script>
+</body>
+</html>
